@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
-final lightTheme = ThemeData.light();
+import 'text_styles.dart';
+import 'color_schemes.dart';
 
-final darkTheme = ThemeData.dark();
+final lightTheme = ThemeData(
+  colorScheme: lightColorScheme,
+  textTheme: textTheme,
+);
+
+final darkTheme = ThemeData(
+  colorScheme: darkColorScheme,
+  textTheme: textTheme,
+);
