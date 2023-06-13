@@ -86,20 +86,47 @@ class Tasks with ChangeNotifier {
     ),
   ];
 
+  int _completedTaskCount = 0;
+
+  bool _showCompleted = true;
+
   Tasks();
 
   List<Task> get tasks {
     return [..._tasks];
   }
 
+  int get completedTaskCount {
+    return _completedTaskCount;
+  }
+
+  bool get showCompleted {
+    return _showCompleted;
+  }
+
   void toggleTask(String id) {
     final index = _tasks.indexWhere((task) => task.id == id);
     _tasks[index].isChecked = !_tasks[index].isChecked;
-    //???
+    if (_tasks[index].isChecked) {
+      _completedTaskCount++;
+    } else {
+      _completedTaskCount--;
+    }
+    notifyListeners();
   }
 
   void removeTask(String id) {
-    _tasks.remove(_tasks.firstWhere((element) => element.id == id));
+    final task = _tasks.firstWhere((element) => element.id == id);
+    if (task.isChecked) {
+      _completedTaskCount--;
+    }
+    _tasks.remove(task);
     notifyListeners();
+  }
+
+  bool toggleCompletedTasksVisibility() {
+    _showCompleted = !_showCompleted;
+    notifyListeners();
+    return _showCompleted;
   }
 }

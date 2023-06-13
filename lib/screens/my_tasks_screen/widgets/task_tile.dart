@@ -49,10 +49,9 @@ class _TaskTileState extends State<TaskTile> {
         ),
         onUpdate: (details) {
           if (details.direction == DismissDirection.startToEnd &&
-              details.progress > 0.2) {
-            setState(() {
-              task.isChecked = true;
-            });
+              details.progress > 0.3 &&
+              !task.isChecked) {
+            Provider.of<Tasks>(context, listen: false).toggleTask(task.id);
           }
         },
         onDismissed: (direction) {
@@ -77,9 +76,8 @@ class _TaskTileState extends State<TaskTile> {
               Checkbox(
                 value: task.isChecked,
                 onChanged: (value) {
-                  setState(() {
-                    task.isChecked = value!;
-                  });
+                  Provider.of<Tasks>(context, listen: false)
+                      .toggleTask(task.id);
                 },
               ),
               Expanded(

@@ -16,6 +16,7 @@ class TasksListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final tasksData = Provider.of<Tasks>(context);
     final tasks = tasksData.tasks;
+    final showCompleted = tasksData.showCompleted;
 
     return SliverToBoxAdapter(
       child: Card(
@@ -35,9 +36,16 @@ class TasksListCard extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: tasks.length,
               padding: EdgeInsets.zero,
-              itemBuilder: (context, index) => TaskTile(
-                task: tasks[index],
-              ),
+              itemBuilder: (context, index) {
+                if (!showCompleted && tasks[index].isChecked) {
+                  return const SizedBox(
+                    height: 0,
+                  );
+                }
+                return TaskTile(
+                  task: tasks[index],
+                );
+              },
               shrinkWrap: true,
             ),
             Container(

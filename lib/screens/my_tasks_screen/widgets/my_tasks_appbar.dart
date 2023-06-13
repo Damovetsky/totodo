@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/ui/color_schemes.dart';
 import '../../../core/ui/text_styles.dart';
+import '../../../providers/tasks.dart';
+import 'visibility_button.dart';
 
 class MyTasksAppBar extends StatelessWidget {
   const MyTasksAppBar({
@@ -15,6 +18,7 @@ class MyTasksAppBar extends StatelessWidget {
       backgroundColor: currentColorScheme(context).background,
       elevation: 3,
       pinned: true,
+      floating: true,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.only(left: 60, top: 14),
         title: SingleChildScrollView(
@@ -34,28 +38,12 @@ class MyTasksAppBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Выполнено — 5',
+                      'Выполнено — ${Provider.of<Tasks>(context).completedTaskCount}',
                       style: currentTextTheme(context).bodyMedium?.copyWith(
                             color: currentColorScheme(context).onSurfaceVariant,
                           ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 24),
-                      child: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: IconButton(
-                          onPressed: () {},
-                          splashRadius: 12,
-                          padding: EdgeInsets.zero,
-                          icon: Icon(
-                            Icons.visibility_rounded,
-                            size: 24,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      ),
-                    )
+                    const VisibilityButton()
                   ],
                 ),
               ],
