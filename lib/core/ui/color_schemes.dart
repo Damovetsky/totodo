@@ -4,7 +4,7 @@ ColorScheme currentColorScheme(context) => Theme.of(context).colorScheme;
 
 const lightColorScheme = ColorScheme(
   brightness: Brightness.light,
-  primary: Color(0xFF005BC1),
+  primary: Color(0xFF007AFF),
   onPrimary: Color(0xFFFFFFFF),
   primaryContainer: Color(0xFFD8E2FF),
   onPrimaryContainer: Color(0xFF001A41),

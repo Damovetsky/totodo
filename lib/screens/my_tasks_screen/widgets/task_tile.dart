@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../models/task.dart';
+
 class TaskTile extends StatefulWidget {
-  const TaskTile({super.key});
+  final Task task;
+
+  const TaskTile({
+    required this.task,
+    super.key,
+  });
 
   @override
   State<TaskTile> createState() => _TaskTileState();
@@ -10,18 +17,24 @@ class TaskTile extends StatefulWidget {
 class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
+    final task = widget.task;
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       constraints: const BoxConstraints(minHeight: 48, maxHeight: 84),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Checkbox(
-            value: false,
-            onChanged: (value) {},
+            value: task.isChecked,
+            onChanged: (value) {
+              setState(() {
+                task.isChecked = value!;
+              });
+            },
           ),
           Expanded(
-            child: Text('Realize new totodo design'),
+            child: Text(task.description),
           ),
           IconButton(
             onPressed: () {},
