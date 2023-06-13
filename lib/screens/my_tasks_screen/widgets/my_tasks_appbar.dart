@@ -39,14 +39,20 @@ class MyTasksAppBar extends StatelessWidget {
                             color: currentColorScheme(context).onSurfaceVariant,
                           ),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 24),
-                        child: Icon(
-                          Icons.visibility_rounded,
-                          size: 24,
-                          color: Theme.of(context).colorScheme.primary,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 24),
+                      child: SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: IconButton(
+                          onPressed: () {},
+                          splashRadius: 12,
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            Icons.visibility_rounded,
+                            size: 24,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                     )

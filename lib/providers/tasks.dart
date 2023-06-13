@@ -45,42 +45,42 @@ class Tasks with ChangeNotifier {
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'a',
+      id: 'i',
       description: 'Go for a walk',
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'b',
+      id: 'j',
       description: 'Read a book',
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'c',
+      id: 'k',
       description: 'Clean the house',
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'd',
+      id: 'm',
       description: 'Write a poem',
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'e',
+      id: 'n',
       description: 'Call a friend',
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'f',
+      id: 'p',
       description: 'Learn a new language',
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'g',
+      id: 'o',
       description: 'Try a new recipe',
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'h',
+      id: 's',
       description: 'Organize your closet',
       createdAt: DateTime.now(),
     ),
@@ -92,7 +92,14 @@ class Tasks with ChangeNotifier {
     return [..._tasks];
   }
 
-  void toggleTask(int index) {
+  void toggleTask(String id) {
+    final index = _tasks.indexWhere((task) => task.id == id);
     _tasks[index].isChecked = !_tasks[index].isChecked;
+    //???
+  }
+
+  void removeTask(String id) {
+    _tasks.remove(_tasks.firstWhere((element) => element.id == id));
+    notifyListeners();
   }
 }
