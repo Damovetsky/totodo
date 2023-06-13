@@ -8,6 +8,11 @@ final lightTheme = ThemeData(
   textTheme: textTheme,
   floatingActionButtonTheme: const FloatingActionButtonThemeData()
       .copyWith(backgroundColor: lightColorScheme.primary),
+  textButtonTheme: TextButtonThemeData(
+    style: const ButtonStyle().copyWith(
+      textStyle: MaterialStateProperty.all<TextStyle>(buttonText),
+    ),
+  ),
 );
 
 final darkTheme = ThemeData(
@@ -15,4 +20,9 @@ final darkTheme = ThemeData(
   textTheme: textTheme,
   floatingActionButtonTheme: const FloatingActionButtonThemeData()
       .copyWith(backgroundColor: lightColorScheme.primary),
+  textButtonTheme: TextButtonThemeData(
+    style: const ButtonStyle().copyWith(
+      textStyle: MaterialStateProperty.all<TextStyle>(buttonText),
+    ),
+  ),
 );

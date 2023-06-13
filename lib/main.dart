@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import './core/ui/theme.dart';
 import './screens/my_tasks_screen/my_tasks_screen.dart';
 import './providers/tasks.dart';
+import 'screens/task_screen/task_detail_screen.dart';
 
 void main() {
   runApp(const App());

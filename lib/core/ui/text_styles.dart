@@ -51,4 +51,11 @@ final textTheme = TextTheme(
   bodySmall: bodySmall,
 );
 
+const double buttonTextSize = 14;
+const double buttonTextHeight = 24;
+final buttonText = _baseFont.copyWith(
+  fontSize: buttonTextSize,
+  height: buttonTextHeight / buttonTextSize,
+);
+
 TextTheme currentTextTheme(context) => Theme.of(context).textTheme;
