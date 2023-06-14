@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/ui/color_schemes.dart';
@@ -7,7 +8,7 @@ import '../../../models/task.dart';
 import '../../../providers/tasks.dart';
 import '../../task_screen/task_detail_screen.dart';
 
-class TaskTile extends StatefulWidget {
+class TaskTile extends StatelessWidget {
   final Task task;
 
   const TaskTile({
@@ -16,13 +17,7 @@ class TaskTile extends StatefulWidget {
   });
 
   @override
-  State<TaskTile> createState() => _TaskTileState();
-}
-
-class _TaskTileState extends State<TaskTile> {
-  @override
   Widget build(BuildContext context) {
-    final task = widget.task;
     return Consumer<Tasks>(
       builder: (context, tasks, _) => Dismissible(
         key: ValueKey(task.id),
@@ -69,7 +64,7 @@ class _TaskTileState extends State<TaskTile> {
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          constraints: const BoxConstraints(minHeight: 48, maxHeight: 84),
+          constraints: const BoxConstraints(minHeight: 48, maxHeight: 106),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,17 +80,31 @@ class _TaskTileState extends State<TaskTile> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Text(
-                    task.description,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: task.isChecked
-                        ? currentTextTheme(context).bodyMedium?.copyWith(
-                              color:
-                                  currentColorScheme(context).onSurfaceVariant,
-                              decoration: TextDecoration.lineThrough,
-                            )
-                        : currentTextTheme(context).bodyMedium,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        task.description,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: task.isChecked
+                            ? currentTextTheme(context).bodyMedium?.copyWith(
+                                  color: currentColorScheme(context)
+                                      .onSurfaceVariant,
+                                  decoration: TextDecoration.lineThrough,
+                                )
+                            : currentTextTheme(context).bodyMedium,
+                      ),
+                      if (task.dueDate != null)
+                        Text(
+                          DateFormat.yMMMMd('ru').format(task.dueDate!),
+                          style: currentTextTheme(context).titleSmall?.copyWith(
+                                color: currentColorScheme(context)
+                                    .onSurfaceVariant,
+                              ),
+                        )
+                    ],
                   ),
                 ),
               ),

@@ -6,6 +6,7 @@ import '../../core/ui/dimentions.dart';
 import '../../core/ui/text_styles.dart';
 import '../../models/task.dart';
 import '../../providers/tasks.dart';
+import 'widgets/calendar_switch.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   static const routeName = '/task-detail';
@@ -15,8 +16,13 @@ class TaskDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final task = ModalRoute.of(context)?.settings.arguments as Task?;
-    final _textController = TextEditingController(text: task?.description);
+    final textController = TextEditingController(text: task?.description);
     Priority priority = Priority.none;
+    DateTime? date;
+
+    void getDate(DateTime? newDate) {
+      date = newDate;
+    }
 
     return Scaffold(
       backgroundColor: currentColorScheme(context).background,
@@ -40,26 +46,27 @@ class TaskDetailScreen extends StatelessWidget {
             child: Center(
               child: TextButton(
                 onPressed: () {
-                  if (task != null && _textController.text.isNotEmpty) {
+                  if (task != null && textController.text.isNotEmpty) {
                     Provider.of<Tasks>(context, listen: false).updateTask(
                       task.id,
                       Task(
                         id: task.id,
-                        description: _textController.text,
+                        description: textController.text,
                         createdAt: task.createdAt,
                         priority: priority,
                         isChecked: task.isChecked,
+                        dueDate: date,
                       ),
                     );
-                    // _textController.dispose();
                     Navigator.of(context).pop();
-                  } else if (task == null && _textController.text.isNotEmpty) {
+                  } else if (task == null && textController.text.isNotEmpty) {
                     Provider.of<Tasks>(context, listen: false).addTask(
                       Task(
                         id: DateTime.now().toString(),
-                        description: _textController.text,
+                        description: textController.text,
                         createdAt: DateTime.now(),
                         priority: priority,
+                        dueDate: date,
                       ),
                     );
                     Navigator.of(context).pop();
@@ -90,7 +97,7 @@ class TaskDetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     elevation: 2,
                     child: TextField(
-                      controller: _textController,
+                      controller: textController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: currentColorScheme(context).surface,
@@ -144,11 +151,16 @@ class TaskDetailScreen extends StatelessWidget {
                                   currentColorScheme(context).onSurfaceVariant,
                             ),
                       ),
+                      value: task?.priority,
                       items: const <DropdownMenuItem>[
                         DropdownMenuItem(
-                            value: Priority.none, child: Text('Нет')),
+                          value: Priority.none,
+                          child: Text('Нет'),
+                        ),
                         DropdownMenuItem(
-                            value: Priority.low, child: Text('Низкий')),
+                          value: Priority.low,
+                          child: Text('Низкий'),
+                        ),
                         DropdownMenuItem(
                           value: Priority.high,
                           child: Text(
@@ -168,55 +180,7 @@ class TaskDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   //Calendar
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Сделать до',
-                              style: currentTextTheme(context).bodyLarge,
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                showDatePicker(
-                                  helpText: '',
-                                  initialDatePickerMode: DatePickerMode.day,
-                                  confirmText: 'ГОТОВО',
-                                  cancelText: 'ОТМЕНА',
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2023),
-                                  builder: (context, child) => Container(
-                                    child: child,
-                                  ),
-                                  lastDate: DateTime(2024),
-                                );
-                              },
-                              child: Text(
-                                'Тут какая-то дата',
-                                style: currentTextTheme(context)
-                                    .labelLarge
-                                    ?.copyWith(
-                                      color:
-                                          currentColorScheme(context).primary,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Switch(
-                        value: false,
-                        onChanged: (change) {},
-                      )
-                    ],
-                  ),
+                  CalendarSwitch(dueDate: task?.dueDate, getDate: getDate),
                   const SizedBox(height: 32),
                 ],
               ),
@@ -225,7 +189,7 @@ class TaskDetailScreen extends StatelessWidget {
               thickness: 0.5,
               color: currentColorScheme(context).onSurfaceVariant,
             ),
-            //Deete button
+            //Delete button
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: screenHorizontalMargin,
