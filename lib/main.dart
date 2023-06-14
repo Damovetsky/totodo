@@ -27,10 +27,13 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'ToToDo',
-        theme: lightTheme,
         debugShowCheckedModeBanner: false,
+        theme: lightTheme,
         //darkTheme: darkTheme,
         home: const MyTasksScreen(),
+        routes: {
+          TaskDetailScreen.routeName: (context) => const TaskDetailScreen(),
+        },
       ),
     );
   }

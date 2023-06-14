@@ -5,6 +5,7 @@ import '../../../core/ui/color_schemes.dart';
 import '../../../core/ui/text_styles.dart';
 import '../../../models/task.dart';
 import '../../../providers/tasks.dart';
+import '../../task_screen/task_detail_screen.dart';
 
 class TaskTile extends StatefulWidget {
   final Task task;
@@ -99,7 +100,10 @@ class _TaskTileState extends State<TaskTile> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(TaskDetailScreen.routeName, arguments: task);
+                },
                 icon: Icon(
                   Icons.info_outline,
                   color: currentColorScheme(context).onSurfaceVariant,

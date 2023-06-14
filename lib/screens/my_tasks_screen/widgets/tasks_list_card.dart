@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../core/ui/dimentions.dart';
 import '../../../core/ui/text_styles.dart';
 import '../../../core/ui/color_schemes.dart';
+import '../../task_screen/task_detail_screen.dart';
 import './task_tile.dart';
 import '../../../providers/tasks.dart';
 
@@ -48,15 +49,19 @@ class TasksListCard extends StatelessWidget {
               },
               shrinkWrap: true,
             ),
-            Container(
-              height: 48,
-              padding: const EdgeInsets.only(left: 52, bottom: 8),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Новое',
-                style: currentTextTheme(context).bodyMedium?.copyWith(
-                      color: currentColorScheme(context).onSurfaceVariant,
-                    ),
+            GestureDetector(
+              onTap: () =>
+                  Navigator.of(context).pushNamed(TaskDetailScreen.routeName),
+              child: Container(
+                height: 48,
+                padding: const EdgeInsets.only(left: 52, bottom: 8),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Новое',
+                  style: currentTextTheme(context).bodyMedium?.copyWith(
+                        color: currentColorScheme(context).onSurfaceVariant,
+                      ),
+                ),
               ),
             )
           ],

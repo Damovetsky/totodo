@@ -125,6 +125,19 @@ class Tasks with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateTask(String id, Task newTask) {
+    final taskIndex = _tasks.indexWhere((task) => task.id == id);
+    if (taskIndex >= 0) {
+      _tasks[taskIndex] = newTask;
+    }
+    notifyListeners();
+  }
+
+  void addTask(Task newTask) {
+    _tasks.insert(0, newTask);
+    notifyListeners();
+  }
+
   bool toggleCompletedTasksVisibility() {
     _showCompleted = !_showCompleted;
     notifyListeners();

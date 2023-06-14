@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../task_screen/task_detail_screen.dart';
 import './widgets/my_tasks_appbar.dart';
 import '../../core/ui/color_schemes.dart';
 import 'widgets/tasks_list_card.dart';
 
 class MyTasksScreen extends StatelessWidget {
+  static const routeName = '/';
+
   const MyTasksScreen({super.key});
 
   @override
@@ -18,7 +23,9 @@ class MyTasksScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(TaskDetailScreen.routeName);
+        },
         child: const Icon(Icons.add),
       ),
     );

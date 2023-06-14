@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/ui/color_schemes.dart';
 import '../../core/ui/dimentions.dart';
 import '../../core/ui/text_styles.dart';
+import '../../models/task.dart';
+import '../../providers/tasks.dart';
 
 class TaskDetailScreen extends StatelessWidget {
+  static const routeName = '/task-detail';
+
   const TaskDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final task = ModalRoute.of(context)?.settings.arguments as Task?;
+    final _textController = TextEditingController(text: task?.description);
+    Priority priority = Priority.none;
+
     return Scaffold(
       backgroundColor: currentColorScheme(context).background,
       appBar: AppBar(
@@ -17,7 +26,9 @@ class TaskDetailScreen extends StatelessWidget {
         scrolledUnderElevation: 4,
         leading: IconButton(
           splashRadius: 24,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
           icon: Icon(
             Icons.close,
             color: currentColorScheme(context).onSurface,
@@ -28,7 +39,32 @@ class TaskDetailScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 16),
             child: Center(
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (task != null && _textController.text.isNotEmpty) {
+                    Provider.of<Tasks>(context, listen: false).updateTask(
+                      task.id,
+                      Task(
+                        id: task.id,
+                        description: _textController.text,
+                        createdAt: task.createdAt,
+                        priority: priority,
+                        isChecked: task.isChecked,
+                      ),
+                    );
+                    // _textController.dispose();
+                    Navigator.of(context).pop();
+                  } else if (task == null && _textController.text.isNotEmpty) {
+                    Provider.of<Tasks>(context, listen: false).addTask(
+                      Task(
+                        id: DateTime.now().toString(),
+                        description: _textController.text,
+                        createdAt: DateTime.now(),
+                        priority: priority,
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  }
+                },
                 child: const Text('СОХРАНИТЬ'),
               ),
             ),
@@ -41,7 +77,8 @@ class TaskDetailScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: screenHorizontalMargin),
+                horizontal: screenHorizontalMargin,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -53,6 +90,7 @@ class TaskDetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     elevation: 2,
                     child: TextField(
+                      controller: _textController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: currentColorScheme(context).surface,
@@ -60,8 +98,9 @@ class TaskDetailScreen extends StatelessWidget {
                         hintStyle: currentTextTheme(context)
                             .bodyMedium
                             ?.copyWith(
-                                color: currentColorScheme(context)
-                                    .onSurfaceVariant),
+                              color:
+                                  currentColorScheme(context).onSurfaceVariant,
+                            ),
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.circular(8),
@@ -106,17 +145,21 @@ class TaskDetailScreen extends StatelessWidget {
                             ),
                       ),
                       items: const <DropdownMenuItem>[
-                        DropdownMenuItem(value: 'No', child: Text('Нет')),
-                        DropdownMenuItem(value: 'Low', child: Text('Низкий')),
                         DropdownMenuItem(
-                          value: 'High',
+                            value: Priority.none, child: Text('Нет')),
+                        DropdownMenuItem(
+                            value: Priority.low, child: Text('Низкий')),
+                        DropdownMenuItem(
+                          value: Priority.high,
                           child: Text(
                             '!! Высокий',
                             style: TextStyle(color: redColor),
                           ),
                         ),
                       ],
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        priority = value;
+                      },
                     ),
                   ),
                   Divider(
@@ -156,7 +199,7 @@ class TaskDetailScreen extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                '2 июня 2021',
+                                'Тут какая-то дата',
                                 style: currentTextTheme(context)
                                     .labelLarge
                                     ?.copyWith(
@@ -188,7 +231,13 @@ class TaskDetailScreen extends StatelessWidget {
                 horizontal: screenHorizontalMargin,
               ),
               child: TextButton.icon(
-                onPressed: () {},
+                onPressed: task == null
+                    ? null
+                    : () {
+                        Provider.of<Tasks>(context, listen: false)
+                            .removeTask(task.id);
+                        Navigator.of(context).pop();
+                      },
                 style: TextButton.styleFrom(
                   foregroundColor: currentColorScheme(context).error,
                   textStyle: currentTextTheme(context).bodyLarge,
