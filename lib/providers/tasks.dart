@@ -31,7 +31,7 @@ class Tasks with ChangeNotifier {
     ),
     Task(
       id: 'f',
-      description: 'Learn a new language',
+      description: 'Learn a new word',
       createdAt: DateTime.now(),
     ),
     Task(
@@ -41,7 +41,8 @@ class Tasks with ChangeNotifier {
     ),
     Task(
       id: 'h',
-      description: 'Organize your closet',
+      description:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis nisl congue, faucibus urna congue, dictum velit. Integer non tempus tortor. Nulla volutpat commodo velit, sit amet euismod magna sodales ac. Aliquam pretium convallis magna sed vestibulum. Vestibulum ornare varius posuere. Phasellus congue sodales justo, ut aliquam nibh fermentum et. Vivamus pulvinar gravida nisl non dapibus. Nulla scelerisque ullamcorper magna sit amet fermentum. Nullam nec rutrum tortor.',
       createdAt: DateTime.now(),
     ),
     Task(

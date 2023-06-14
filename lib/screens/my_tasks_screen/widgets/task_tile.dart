@@ -71,29 +71,39 @@ class _TaskTileState extends State<TaskTile> {
           constraints: const BoxConstraints(minHeight: 48, maxHeight: 84),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Checkbox(
                 value: task.isChecked,
+                activeColor: greenColor,
                 onChanged: (value) {
                   Provider.of<Tasks>(context, listen: false)
                       .toggleTask(task.id);
                 },
               ),
               Expanded(
-                child: Text(
-                  task.description,
-                  style: task.isChecked
-                      ? currentTextTheme(context).bodyMedium?.copyWith(
-                            color: currentColorScheme(context).onSurfaceVariant,
-                            decoration: TextDecoration.lineThrough,
-                          )
-                      : currentTextTheme(context).bodyMedium,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Text(
+                    task.description,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: task.isChecked
+                        ? currentTextTheme(context).bodyMedium?.copyWith(
+                              color:
+                                  currentColorScheme(context).onSurfaceVariant,
+                              decoration: TextDecoration.lineThrough,
+                            )
+                        : currentTextTheme(context).bodyMedium,
+                  ),
                 ),
               ),
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.info_outline),
+                icon: Icon(
+                  Icons.info_outline,
+                  color: currentColorScheme(context).onSurfaceVariant,
+                ),
               )
             ],
           ),
