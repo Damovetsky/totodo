@@ -7,6 +7,7 @@ import '../../core/ui/text_styles.dart';
 import '../../models/task.dart';
 import '../../providers/tasks.dart';
 import 'widgets/calendar_switch.dart';
+import 'widgets/custom_dropdown_button.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   static const routeName = '/task-detail';
@@ -19,6 +20,10 @@ class TaskDetailScreen extends StatelessWidget {
     final textController = TextEditingController(text: task?.description);
     Priority priority = Priority.none;
     DateTime? date;
+
+    void getPriority(Priority newPriority) {
+      priority = newPriority;
+    }
 
     void getDate(DateTime? newDate) {
       date = newDate;
@@ -123,57 +128,7 @@ class TaskDetailScreen extends StatelessWidget {
                     height: 12,
                   ),
                   //Dropdown button
-                  ButtonTheme(
-                    alignedDropdown: true,
-                    child: DropdownButtonFormField(
-                      style: currentTextTheme(context).bodyMedium,
-                      decoration: InputDecoration(
-                        enabled: false,
-                        constraints: const BoxConstraints(maxWidth: 164),
-                        disabledBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            style: BorderStyle.none,
-                          ),
-                        ),
-                        contentPadding: const EdgeInsets.only(
-                          top: 16,
-                          bottom: 8,
-                        ),
-                        labelText: 'Важность',
-                        labelStyle: currentTextTheme(context).headlineSmall,
-                      ),
-                      alignment: Alignment.centerLeft,
-                      iconSize: 0,
-                      hint: Text(
-                        'Нет',
-                        style: currentTextTheme(context).bodyMedium?.copyWith(
-                              color:
-                                  currentColorScheme(context).onSurfaceVariant,
-                            ),
-                      ),
-                      value: task?.priority,
-                      items: const <DropdownMenuItem>[
-                        DropdownMenuItem(
-                          value: Priority.none,
-                          child: Text('Нет'),
-                        ),
-                        DropdownMenuItem(
-                          value: Priority.low,
-                          child: Text('Низкий'),
-                        ),
-                        DropdownMenuItem(
-                          value: Priority.high,
-                          child: Text(
-                            '!! Высокий',
-                            style: TextStyle(color: redColor),
-                          ),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        priority = value;
-                      },
-                    ),
-                  ),
+                  CustomDropdownButton(task: task, getPriority: getPriority),
                   Divider(
                     thickness: 0.5,
                     color: currentColorScheme(context).onSurfaceVariant,

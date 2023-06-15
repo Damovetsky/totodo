@@ -1,89 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import '../models/task.dart';
 
 class Tasks with ChangeNotifier {
+  var logger = Logger();
+
   final List<Task> _tasks = [
     Task(
       id: 'a',
-      description: 'Go for a walk',
+      description: 'Приветствую тебя на экране с задачами моего приложения!',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'b',
-      description: 'Read a book',
+      description: 'Ты скорее всего хочешь проверить реализованный функционал',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'c',
-      description: 'Clean the house',
+      description: 'Эту задачу можно свайпнуть вправо, чтобы её выполнить',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'd',
-      description: 'Write a poem',
+      description: 'А эту задачу можно удалить свайпом влево',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'e',
-      description: 'Call a friend',
+      description:
+          'А это просто задача с ну ооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооочень длинным текстом',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'f',
-      description: 'Learn a new word',
+      description:
+          'Когда повыполняешь задачи, нажми на иконку глаза, чтобы скрыть выполненные',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'g',
-      description: 'Try a new recipe',
+      description: 'А это просто крайне срочная задача!',
+      priority: Priority.high,
       createdAt: DateTime.now(),
       dueDate: DateTime.now(),
     ),
     Task(
       id: 'h',
-      description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis nisl congue, faucibus urna congue, dictum velit. Integer non tempus tortor. Nulla volutpat commodo velit, sit amet euismod magna sodales ac. Aliquam pretium convallis magna sed vestibulum. Vestibulum ornare varius posuere. Phasellus congue sodales justo, ut aliquam nibh fermentum et. Vivamus pulvinar gravida nisl non dapibus. Nulla scelerisque ullamcorper magna sit amet fermentum. Nullam nec rutrum tortor.',
+      description: 'Эту задачу можно отредактировать нажав на иконку -->',
       createdAt: DateTime.now(),
     ),
     Task(
-      id: 'i',
-      description: 'Go for a walk',
-      createdAt: DateTime.now(),
-    ),
+        id: 'i',
+        description:
+            'Тут уж совсем несрочная задача, дедлайн которой ещё не скоро',
+        createdAt: DateTime.now(),
+        dueDate: DateTime(2024),
+        priority: Priority.low),
     Task(
       id: 'j',
-      description: 'Read a book',
+      description: 'Попробуй добавить новую задачу при помощи кнопки с плюсом',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'k',
-      description: 'Clean the house',
+      description:
+          'Дальше просто лист задач, чтобы была возможность проверить скрол',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'm',
-      description: 'Write a poem',
+      description: 'Задача 1',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'n',
-      description: 'Call a friend',
+      description: 'Задача 2',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'p',
-      description: 'Learn a new language',
+      description: 'Задача 3',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 'o',
-      description: 'Try a new recipe',
+      description: 'Задача 4',
       createdAt: DateTime.now(),
     ),
     Task(
       id: 's',
-      description: 'Organize your closet',
+      description: 'Задача 5',
+      createdAt: DateTime.now(),
+    ),
+    Task(
+      id: 'l',
+      description: 'Удачной проверки и успехов во Flutter!',
       createdAt: DateTime.now(),
     ),
   ];
@@ -108,30 +121,42 @@ class Tasks with ChangeNotifier {
 
   void toggleTask(String id) {
     final index = _tasks.indexWhere((task) => task.id == id);
-    _tasks[index].isChecked = !_tasks[index].isChecked;
-    if (_tasks[index].isChecked) {
-      _completedTaskCount++;
+    if (index != -1) {
+      _tasks[index].isChecked = !_tasks[index].isChecked;
+      if (_tasks[index].isChecked) {
+        _completedTaskCount++;
+      } else {
+        _completedTaskCount--;
+      }
+      notifyListeners();
     } else {
-      _completedTaskCount--;
+      logger.e('Task index was not found when checking the checkbox');
     }
-    notifyListeners();
   }
 
   void removeTask(String id) {
-    final task = _tasks.firstWhere((element) => element.id == id);
-    if (task.isChecked) {
-      _completedTaskCount--;
+    try {
+      final task = _tasks.firstWhere((element) => element.id == id);
+      if (task.isChecked) {
+        _completedTaskCount--;
+      }
+      _tasks.remove(task);
+      notifyListeners();
+    } catch (error) {
+      logger.e('Task was not found when removing it');
     }
-    _tasks.remove(task);
-    notifyListeners();
   }
 
   void updateTask(String id, Task newTask) {
     final taskIndex = _tasks.indexWhere((task) => task.id == id);
-    if (taskIndex >= 0) {
-      _tasks[taskIndex] = newTask;
+    if (taskIndex != -1) {
+      if (taskIndex >= 0) {
+        _tasks[taskIndex] = newTask;
+      }
+      notifyListeners();
+    } else {
+      logger.e('Task was not found when updating it');
     }
-    notifyListeners();
   }
 
   void addTask(Task newTask) {

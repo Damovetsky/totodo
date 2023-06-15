@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/ui/dimentions.dart';
@@ -18,6 +19,9 @@ class TasksListCard extends StatelessWidget {
     final tasksData = Provider.of<Tasks>(context);
     final tasks = tasksData.tasks;
     final showCompleted = tasksData.showCompleted;
+    final logger = Logger();
+
+    logger.d('TaskListCard bulid method is called');
 
     return SliverToBoxAdapter(
       child: Card(
@@ -29,7 +33,7 @@ class TasksListCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         color: currentColorScheme(context).surface,
-        clipBehavior: Clip.antiAlias, //???
+        clipBehavior: Clip.antiAlias,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

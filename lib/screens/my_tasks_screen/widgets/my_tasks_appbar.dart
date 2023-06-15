@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/ui/color_schemes.dart';
@@ -13,6 +14,8 @@ class MyTasksAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final logger = Logger();
+    logger.d('Appbar build method is called');
     return SliverAppBar(
       expandedHeight: 164,
       backgroundColor: currentColorScheme(context).background,
