@@ -1,16 +1,11 @@
 # totodo
 
-A new Flutter project.
+Приложение для создания и ведения задач.
 
-## Getting Started
+Реализован список задач, показ количества выполненных дел, свайпы для отметки выполнения и удаления, выставление и отображение приоритетности задачи и их дедлайнов, редактирование и добавление новых задач.
 
-This project is a starting point for a Flutter application.
+Файлы APK лежат в релизах Github
+Ссылка: https://github.com/Damovetsky/totodo/releases/tag/v1.0.0
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Alt text](/screenshots/Tasks_screen.png?raw=true "Экран со всеми задачами")
+![Alt text](/screenshots/Task_details_screen.png?raw=true "Экран редактирования/создания задачи")
