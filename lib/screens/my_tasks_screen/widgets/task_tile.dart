@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -7,8 +8,9 @@ import '../../../core/ui/text_styles.dart';
 import '../../../models/task.dart';
 import '../../../providers/tasks.dart';
 import '../../task_screen/task_detail_screen.dart';
+import 'custom_checkbox.dart';
 
-class TaskTile extends StatelessWidget {
+class TaskTile extends StatefulWidget {
   final Task task;
 
   const TaskTile({
@@ -17,10 +19,21 @@ class TaskTile extends StatelessWidget {
   });
 
   @override
+  State<TaskTile> createState() => _TaskTileState();
+}
+
+class _TaskTileState extends State<TaskTile> {
+  @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting('ru');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<Tasks>(
       builder: (context, tasks, _) => Dismissible(
-        key: ValueKey(task.id),
+        key: ValueKey(widget.task.id),
         background: Container(
           alignment: Alignment.centerLeft,
           color: greenColor,
@@ -46,13 +59,15 @@ class TaskTile extends StatelessWidget {
         onUpdate: (details) {
           if (details.direction == DismissDirection.startToEnd &&
               details.progress > 0.3 &&
-              !task.isChecked) {
-            Provider.of<Tasks>(context, listen: false).toggleTask(task.id);
+              !widget.task.isChecked) {
+            Provider.of<Tasks>(context, listen: false)
+                .toggleTask(widget.task.id);
           }
         },
         onDismissed: (direction) {
           if (direction == DismissDirection.endToStart) {
-            Provider.of<Tasks>(context, listen: false).removeTask(task.id);
+            Provider.of<Tasks>(context, listen: false)
+                .removeTask(widget.task.id);
           }
         },
         confirmDismiss: (direction) {
@@ -69,14 +84,7 @@ class TaskTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Checkbox(
-                value: task.isChecked,
-                activeColor: greenColor,
-                onChanged: (value) {
-                  Provider.of<Tasks>(context, listen: false)
-                      .toggleTask(task.id);
-                },
-              ),
+              CustomCheckbox(task: widget.task),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -84,21 +92,51 @@ class TaskTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        task.description,
+                      RichText(
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
-                        style: task.isChecked
-                            ? currentTextTheme(context).bodyMedium?.copyWith(
-                                  color: currentColorScheme(context)
-                                      .onSurfaceVariant,
-                                  decoration: TextDecoration.lineThrough,
-                                )
-                            : currentTextTheme(context).bodyMedium,
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            if (widget.task.priority == Priority.high)
+                              TextSpan(
+                                text: '!! ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  height: 1,
+                                  color: widget.task.isChecked
+                                      ? greyColor
+                                      : redColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            if (widget.task.priority == Priority.low)
+                              const TextSpan(
+                                text: '↓ ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  height: 1,
+                                  color: greyColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            TextSpan(
+                              text: widget.task.description,
+                              style: widget.task.isChecked
+                                  ? currentTextTheme(context)
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: currentColorScheme(context)
+                                            .onSurfaceVariant,
+                                        decoration: TextDecoration.lineThrough,
+                                      )
+                                  : currentTextTheme(context).bodyMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                      if (task.dueDate != null)
+                      if (widget.task.dueDate != null)
                         Text(
-                          DateFormat.yMMMMd('ru').format(task.dueDate!),
+                          DateFormat.yMMMMd('ru').format(widget.task.dueDate!),
                           style: currentTextTheme(context).titleSmall?.copyWith(
                                 color: currentColorScheme(context)
                                     .onSurfaceVariant,
@@ -110,8 +148,8 @@ class TaskTile extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(TaskDetailScreen.routeName, arguments: task);
+                  Navigator.of(context).pushNamed(TaskDetailScreen.routeName,
+                      arguments: widget.task);
                 },
                 icon: Icon(
                   Icons.info_outline,

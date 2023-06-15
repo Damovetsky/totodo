@@ -72,3 +72,4 @@ const darkColorScheme = ColorScheme(
 
 const redColor = Color(0xFFFF3B30);
 const greenColor = Color(0xFF34C759);
+const greyColor = Color(0xFF8E8E93);

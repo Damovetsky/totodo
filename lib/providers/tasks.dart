@@ -38,6 +38,7 @@ class Tasks with ChangeNotifier {
       id: 'g',
       description: 'Try a new recipe',
       createdAt: DateTime.now(),
+      dueDate: DateTime.now(),
     ),
     Task(
       id: 'h',
