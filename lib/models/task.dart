@@ -20,4 +20,9 @@ class Task {
     this.priority = Priority.none,
     this.isChecked = false,
   });
+
+  @override
+  String toString() {
+    return 'description: $description, dueDate: $dueDate, isChecked: $isChecked, Priority: $priority,';
+  }
 }

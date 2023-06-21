@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
+import '../logger.dart';
 import '../models/task.dart';
 
 class Tasks with ChangeNotifier {
-  var logger = Logger();
-
   final List<Task> _tasks = [
     Task(
       id: 'a',
@@ -162,6 +160,7 @@ class Tasks with ChangeNotifier {
   void addTask(Task newTask) {
     _tasks.insert(0, newTask);
     notifyListeners();
+    logger.i('Add new task $newTask');
   }
 
   bool toggleCompletedTasksVisibility() {

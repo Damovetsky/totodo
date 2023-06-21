@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/ui/dimentions.dart';
 import '../../../core/ui/text_styles.dart';
 import '../../../core/ui/color_schemes.dart';
+import '../../../logger.dart';
 import '../../task_screen/task_detail_screen.dart';
 import './task_tile.dart';
 import '../../../providers/tasks.dart';
@@ -19,7 +19,6 @@ class TasksListCard extends StatelessWidget {
     final tasksData = Provider.of<Tasks>(context);
     final tasks = tasksData.tasks;
     final showCompleted = tasksData.showCompleted;
-    final logger = Logger();
 
     logger.d('TaskListCard bulid method is called');
 

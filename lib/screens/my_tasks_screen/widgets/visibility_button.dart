@@ -35,7 +35,7 @@ class _VisibilityButtonState extends State<VisibilityButton> {
             visibility
                 ? Icons.visibility_rounded
                 : Icons.visibility_off_rounded,
-            size: 24,
+            size: 22,
             color: Theme.of(context).colorScheme.primary,
           ),
         ),

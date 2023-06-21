@@ -68,21 +68,26 @@ class _CalendarSwitchState extends State<CalendarSwitch> {
             ],
           ),
         ),
-        Switch(
-          value: date != null,
-          onChanged: (change) async {
-            if (date == null) {
-              date = await _showDatePicker(context, date);
-              widget.getDate(date);
-              setState(() {});
-            } else {
-              setState(() {
-                date = null;
-              });
-              widget.getDate(date);
-            }
-          },
-          activeColor: currentColorScheme(context).primary,
+        Theme(
+          data: Theme.of(context).copyWith(
+            useMaterial3: false,
+          ),
+          child: Switch(
+            value: date != null,
+            onChanged: (change) async {
+              if (date == null) {
+                date = await _showDatePicker(context, date);
+                widget.getDate(date);
+                setState(() {});
+              } else {
+                setState(() {
+                  date = null;
+                });
+                widget.getDate(date);
+              }
+            },
+            activeColor: currentColorScheme(context).primary,
+          ),
         )
       ],
     );

@@ -18,7 +18,7 @@ class TaskDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final task = ModalRoute.of(context)?.settings.arguments as Task?;
     final textController = TextEditingController(text: task?.description);
-    Priority priority = Priority.none;
+    Priority priority = task?.priority ?? Priority.none;
     DateTime? date;
 
     void getPriority(Priority newPriority) {

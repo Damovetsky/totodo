@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/ui/color_schemes.dart';
@@ -11,17 +10,15 @@ class MyTasksAppBar extends StatelessWidget {
   const MyTasksAppBar({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
-    final logger = Logger();
-    logger.d('Appbar build method is called');
     return SliverAppBar(
       expandedHeight: 164,
       backgroundColor: currentColorScheme(context).background,
       elevation: 3,
       pinned: true,
-      floating: true,
+      collapsedHeight: 58,
+      shadowColor: currentColorScheme(context).shadow,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.only(left: 60, top: 14),
         title: SingleChildScrollView(
@@ -36,6 +33,9 @@ class MyTasksAppBar extends StatelessWidget {
                   style: currentTextTheme(context).titleLarge?.copyWith(
                         color: currentColorScheme(context).onBackground,
                       ),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
