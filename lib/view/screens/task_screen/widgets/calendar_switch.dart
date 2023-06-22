@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../../core/ui/color_schemes.dart';
-import '../../../core/ui/text_styles.dart';
+import '../../../../core/ui/color_schemes.dart';
+import '../../../../core/ui/text_styles.dart';
 
 class CalendarSwitch extends StatefulWidget {
   const CalendarSwitch({

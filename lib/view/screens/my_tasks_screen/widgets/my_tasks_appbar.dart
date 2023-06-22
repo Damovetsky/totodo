@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/ui/color_schemes.dart';
-import '../../../core/ui/text_styles.dart';
+import '../../../../core/ui/color_schemes.dart';
+import '../../../../core/ui/text_styles.dart';
 import '../../../providers/tasks.dart';
 import 'visibility_button.dart';
 

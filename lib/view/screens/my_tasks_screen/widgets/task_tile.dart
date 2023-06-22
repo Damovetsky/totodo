@@ -3,9 +3,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/ui/color_schemes.dart';
-import '../../../core/ui/text_styles.dart';
-import '../../../models/task.dart';
+import '../../../../core/ui/color_schemes.dart';
+import '../../../../core/ui/text_styles.dart';
+import '../../../../data/models/task.dart';
 import '../../../providers/tasks.dart';
 import '../../task_screen/task_detail_screen.dart';
 import 'custom_checkbox.dart';

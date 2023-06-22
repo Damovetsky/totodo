@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/ui/color_schemes.dart';
-import '../../core/ui/dimentions.dart';
-import '../../core/ui/text_styles.dart';
-import '../../models/task.dart';
+import '../../../core/ui/color_schemes.dart';
+import '../../../core/ui/dimentions.dart';
+import '../../../core/ui/text_styles.dart';
+import '../../../data/models/task.dart';
 import '../../providers/tasks.dart';
 import 'widgets/calendar_switch.dart';
 import 'widgets/custom_dropdown_button.dart';
@@ -55,7 +55,6 @@ class TaskDetailScreen extends StatelessWidget {
                     Provider.of<Tasks>(context, listen: false).updateTask(
                       task.id,
                       Task(
-                        id: task.id,
                         description: textController.text,
                         createdAt: task.createdAt,
                         priority: priority,
@@ -67,7 +66,6 @@ class TaskDetailScreen extends StatelessWidget {
                   } else if (task == null && textController.text.isNotEmpty) {
                     Provider.of<Tasks>(context, listen: false).addTask(
                       Task(
-                        id: DateTime.now().toString(),
                         description: textController.text,
                         createdAt: DateTime.now(),
                         priority: priority,

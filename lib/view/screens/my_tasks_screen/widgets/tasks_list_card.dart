@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/ui/dimentions.dart';
-import '../../../core/ui/text_styles.dart';
-import '../../../core/ui/color_schemes.dart';
-import '../../../logger.dart';
+import '../../../../core/ui/dimentions.dart';
+import '../../../../core/ui/text_styles.dart';
+import '../../../../core/ui/color_schemes.dart';
+import '../../../../logger.dart';
 import '../../task_screen/task_detail_screen.dart';
 import './task_tile.dart';
 import '../../../providers/tasks.dart';

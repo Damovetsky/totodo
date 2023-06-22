@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/ui/color_schemes.dart';
-import '../../../core/ui/text_styles.dart';
-import '../../../models/task.dart';
+import '../../../../core/ui/color_schemes.dart';
+import '../../../../core/ui/text_styles.dart';
+import '../../../../data/models/task.dart';
 
 class CustomDropdownButton extends StatelessWidget {
   const CustomDropdownButton({
