@@ -20,7 +20,7 @@ class TasksServer {
       url,
       headers: {
         'Authorization': 'Bearer parachaplain',
-        'X-Last-Known-Revision': '1',
+        'X-Last-Known-Revision': '5',
       },
       body: json.encode(
         {
@@ -39,6 +39,6 @@ class TasksServer {
       ),
     );
     final status = response.statusCode;
-    print(status);
+    print(response.body);
   }
 }
