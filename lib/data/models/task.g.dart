@@ -6,11 +6,11 @@ part of 'task.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Task _$TaskFromJson(Map<String, dynamic> json) => Task._forJson(
+Task _$TaskFromJson(Map<String, dynamic> json) => Task._(
       id: json['id'] as String,
       description: json['text'] as String,
       changedAt: Task._dateTimeFromEpoch(json['changed_at'] as int),
-      priority: $enumDecode(_$PriorityEnumMap, json['priority']),
+      priority: $enumDecode(_$PriorityEnumMap, json['importance']),
       dueDate: Task._dateTimeFromEpochWithNull(json['deadline'] as int?),
       createdAt: Task._dateTimeFromEpoch(json['created_at'] as int),
       isChecked: json['done'] as bool,
@@ -24,7 +24,7 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'created_at': Task._dateTimeToEpoch(instance.createdAt),
       'deadline': Task._dateTimeToEpochWithNull(instance.dueDate),
       'changed_at': Task._dateTimeToEpoch(instance.changedAt),
-      'priority': _$PriorityEnumMap[instance.priority]!,
+      'importance': _$PriorityEnumMap[instance.priority]!,
       'color': Task._colorToString(instance.color),
       'last_updated_by': instance.deviceId,
       'done': instance.isChecked,

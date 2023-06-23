@@ -41,7 +41,7 @@ class MyTasksAppBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Выполнено — ${Provider.of<Tasks>(context).completedTaskCount}',
+                      'Выполнено — ${Provider.of<Tasks>(context).getCompletedTaskCount()}',
                       style: currentTextTheme(context).bodyMedium?.copyWith(
                             color: currentColorScheme(context).onSurfaceVariant,
                           ),

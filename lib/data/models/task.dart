@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 
 part 'task.g.dart';
 
-@JsonSerializable(constructor: '_forJson')
+@JsonSerializable(constructor: '_')
 class Task {
   final String id;
 
@@ -32,6 +32,7 @@ class Task {
   )
   final DateTime changedAt;
 
+  @JsonKey(name: 'importance')
   final Priority priority;
 
   @JsonKey(
@@ -44,9 +45,10 @@ class Task {
   final String deviceId;
 
   @JsonKey(name: 'done')
-  bool isChecked;
+  final bool isChecked;
 
-  Task._forJson({
+  //Constructor for JsonSerializable
+  Task._({
     required this.id,
     required this.description,
     required this.changedAt,
@@ -68,6 +70,17 @@ class Task {
     //TODO: implement device id logic
   })  : id = const Uuid().v4(),
         changedAt = DateTime.now(),
+        deviceId = 'unknown';
+
+  Task.withId({
+    required this.id,
+    required this.description,
+    required this.createdAt,
+    this.color,
+    this.dueDate,
+    this.priority = Priority.none,
+    this.isChecked = false,
+  })  : changedAt = DateTime.now(),
         deviceId = 'unknown';
 
   static DateTime _dateTimeFromEpoch(int ms) =>
@@ -96,9 +109,33 @@ class Task {
 
   Map<String, dynamic> toJson() => _$TaskToJson(this);
 
+  Task copyWith({
+    String? id,
+    String? description,
+    DateTime? changedAt,
+    Priority? priority,
+    DateTime? dueDate,
+    DateTime? createdAt,
+    bool? isChecked,
+    String? deviceId,
+    Color? color,
+  }) {
+    return Task._(
+      id: id ?? this.id,
+      description: description ?? this.description,
+      changedAt: changedAt ?? this.changedAt,
+      priority: priority ?? this.priority,
+      dueDate: dueDate ?? this.dueDate,
+      createdAt: createdAt ?? this.createdAt,
+      isChecked: isChecked ?? this.isChecked,
+      deviceId: deviceId ?? this.deviceId,
+      color: color ?? this.color,
+    );
+  }
+
   @override
   String toString() {
-    return 'description: $description, dueDate: $dueDate, isChecked: $isChecked, Priority: $priority';
+    return 'id: $id, description: $description, dueDate: $dueDate, isChecked: $isChecked, Priority: $priority, createdAt: $createdAt, changedAt: $changedAt, deviceId: $deviceId, color: $color';
   }
 }
 

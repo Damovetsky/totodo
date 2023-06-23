@@ -1,4 +1,4 @@
-import '../databases/task_server_db.dart';
+import '../databases/task_server.dart';
 import '../models/task.dart';
 
 abstract interface class TasksRepository {
@@ -10,29 +10,27 @@ abstract interface class TasksRepository {
 
   Future<void> removeTask(String id);
 
-  Future<void> toggleTask(String id);
-
   Future<void> patchTasks(List<Task> tasks);
 }
 
 class TasksRepositoryImpl implements TasksRepository {
   //TODO organize di
-  final serverDB = TaskServerDBImpl();
+  final TaskServer server = TaskServerImpl();
 
   //TODO get revision on repository init
   late int _revision;
 
   @override
-  Future<void> addTask(Task newTask) {
-    // TODO: implement addTask
-    throw UnimplementedError();
+  Future<void> addTask(Task newTask) async {
+    await server.addTask(newTask, _revision);
+    _revision++;
   }
 
   @override
   Future<List<Task>> getTasks() async {
-    final serverResponse = await serverDB.getTasksList();
+    final serverResponse = await server.getTasksList();
     _revision = serverResponse['revision'];
-    final mapList = serverResponse['list'] as List<Map<String, dynamic>>;
+    final mapList = serverResponse['list'] as List;
     final tasksList =
         mapList.map((jsonTask) => Task.fromJson(jsonTask)).toList();
     return tasksList;
@@ -45,20 +43,14 @@ class TasksRepositoryImpl implements TasksRepository {
   }
 
   @override
-  Future<void> removeTask(String id) {
-    // TODO: implement removeTask
-    throw UnimplementedError();
+  Future<void> removeTask(String id) async {
+    await server.removeTask(id, _revision);
+    _revision++;
   }
 
   @override
-  Future<void> toggleTask(String id) {
-    // TODO: implement toggleTask
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateTask(String id, Task newTask) {
-    // TODO: implement updateTask
-    throw UnimplementedError();
+  Future<void> updateTask(String id, Task newTask) async {
+    await server.updateTask(id, newTask, _revision);
+    _revision++;
   }
 }

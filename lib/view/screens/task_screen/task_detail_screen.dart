@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,17 +11,77 @@ import '../../providers/tasks.dart';
 import 'widgets/calendar_switch.dart';
 import 'widgets/custom_dropdown_button.dart';
 
-class TaskDetailScreen extends StatelessWidget {
+class TaskDetailScreen extends StatefulWidget {
   static const routeName = '/task-detail';
 
   const TaskDetailScreen({super.key});
 
   @override
+  State<TaskDetailScreen> createState() => _TaskDetailScreenState();
+}
+
+class _TaskDetailScreenState extends State<TaskDetailScreen> {
+  Task? argTask;
+  late final TextEditingController textController;
+  Priority priority = Priority.none;
+  DateTime? date;
+
+  bool _isInit = true;
+  bool _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      argTask = ModalRoute.of(context)?.settings.arguments as Task?;
+      textController = TextEditingController(text: argTask?.description);
+      if (argTask != null) {
+        priority = argTask!.priority;
+      }
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _saveChanges(Task? task) async {
+    setState(() {
+      _isLoading = true;
+    });
+    if (task != null) {
+      await Provider.of<Tasks>(context, listen: false).updateTask(
+        task.id,
+        Task.withId(
+          id: task.id,
+          description: textController.text,
+          createdAt: task.createdAt,
+          priority: priority,
+          isChecked: task.isChecked,
+          dueDate: date,
+        ),
+      );
+    } else {
+      await Provider.of<Tasks>(context, listen: false).addTask(
+        Task(
+          description: textController.text,
+          createdAt: DateTime.now(),
+          priority: priority,
+          dueDate: date,
+        ),
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final task = ModalRoute.of(context)?.settings.arguments as Task?;
-    final textController = TextEditingController(text: task?.description);
-    Priority priority = task?.priority ?? Priority.none;
-    DateTime? date;
+    final task = argTask;
 
     void getPriority(Priority newPriority) {
       priority = newPriority;
@@ -49,34 +111,22 @@ class TaskDetailScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: Center(
-              child: TextButton(
-                onPressed: () {
-                  if (task != null && textController.text.isNotEmpty) {
-                    Provider.of<Tasks>(context, listen: false).updateTask(
-                      task.id,
-                      Task(
-                        description: textController.text,
-                        createdAt: task.createdAt,
-                        priority: priority,
-                        isChecked: task.isChecked,
-                        dueDate: date,
-                      ),
-                    );
-                    Navigator.of(context).pop();
-                  } else if (task == null && textController.text.isNotEmpty) {
-                    Provider.of<Tasks>(context, listen: false).addTask(
-                      Task(
-                        description: textController.text,
-                        createdAt: DateTime.now(),
-                        priority: priority,
-                        dueDate: date,
-                      ),
-                    );
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: const Text('СОХРАНИТЬ'),
-              ),
+              child: _isLoading
+                  ? const Padding(
+                      padding: EdgeInsets.only(right: 20),
+                      child: CircularProgressIndicator(),
+                    )
+                  : TextButton(
+                      onPressed: () async {
+                        if (textController.text.isNotEmpty) {
+                          await _saveChanges(task);
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
+                        }
+                      },
+                      child: const Text('СОХРАНИТЬ'),
+                    ),
             ),
           )
         ],
@@ -148,12 +198,20 @@ class TaskDetailScreen extends StatelessWidget {
                 horizontal: screenHorizontalMargin,
               ),
               child: TextButton.icon(
-                onPressed: task == null
+                onPressed: task == null || _isLoading
                     ? null
-                    : () {
-                        Provider.of<Tasks>(context, listen: false)
+                    : () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await Provider.of<Tasks>(context, listen: false)
                             .removeTask(task.id);
-                        Navigator.of(context).pop();
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
                       },
                 style: TextButton.styleFrom(
                   foregroundColor: currentColorScheme(context).error,

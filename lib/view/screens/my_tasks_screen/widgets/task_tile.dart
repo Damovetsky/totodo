@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -64,7 +66,8 @@ class _TaskTileState extends State<TaskTile> {
       },
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
-          Provider.of<Tasks>(context, listen: false).removeTask(widget.task.id);
+          unawaited(Provider.of<Tasks>(context, listen: false)
+              .removeTask(widget.task.id));
         }
       },
       confirmDismiss: (direction) {

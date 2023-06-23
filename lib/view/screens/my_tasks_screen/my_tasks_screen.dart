@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../try_server/tasks_server.dart';
 import '../task_screen/task_detail_screen.dart';
 import './widgets/my_tasks_appbar.dart';
 import '../../../core/ui/color_schemes.dart';
@@ -23,9 +22,7 @@ class MyTasksScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          //Navigator.of(context).pushNamed(TaskDetailScreen.routeName);
-          TasksServer server = TasksServer();
-          server.addTask();
+          Navigator.of(context).pushNamed(TaskDetailScreen.routeName);
         },
         child: const Icon(Icons.add),
       ),

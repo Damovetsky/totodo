@@ -7,7 +7,7 @@ import '../../core/error/exeption.dart';
 import '../../logger.dart';
 import '../models/task.dart';
 
-abstract interface class TaskServerDB {
+abstract interface class TaskServer {
   Future<Map<String, dynamic>> getTasksList();
 
   Future<void> addTask(Task newTask, int revision);
@@ -21,13 +21,13 @@ abstract interface class TaskServerDB {
   Future<void> getTask(String id);
 }
 
-class TaskServerDBImpl implements TaskServerDB {
+class TaskServerImpl implements TaskServer {
   final cl = _MyClient();
 
   @override
   Future<void> addTask(Task newTask, int revision) async {
     final url = Uri.parse('https://beta.mrdekk.ru/todobackend/list');
-    final encodedData = json.encode(newTask.toJson());
+    final encodedData = json.encode({'element': newTask.toJson()});
     try {
       final response = await cl.post(
         url,
@@ -70,8 +70,7 @@ class TaskServerDBImpl implements TaskServerDB {
       logger.e('Bad response format');
       rethrow;
     } catch (e) {
-      logger.e('An error occured when conecting with server: $e');
-      throw UnknownException();
+      rethrow;
     }
   }
 
@@ -182,7 +181,7 @@ class TaskServerDBImpl implements TaskServerDB {
   @override
   Future<void> updateTask(String id, Task newTask, int revision) async {
     final url = Uri.parse('https://beta.mrdekk.ru/todobackend/list/$id');
-    final encodedData = json.encode(newTask.toJson());
+    final encodedData = json.encode({'element': newTask.toJson()});
     try {
       final response = await cl.put(
         url,
