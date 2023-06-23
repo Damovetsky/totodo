@@ -135,6 +135,7 @@ class Tasks with ChangeNotifier {
       notifyListeners();
       await tasksRepos.removeTask(id);
     } catch (error) {
+      logger.e(error);
       logger.e('Task was not found when removing it');
     }
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/ui/color_schemes.dart';
 import '../../../core/ui/dimentions.dart';
@@ -36,6 +37,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       textController = TextEditingController(text: argTask?.description);
       if (argTask != null) {
         priority = argTask!.priority;
+        date = argTask!.dueDate;
       }
     }
     _isInit = false;
@@ -55,7 +57,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     if (task != null) {
       await Provider.of<Tasks>(context, listen: false).updateTask(
         task.id,
-        Task.withId(
+        Task(
           id: task.id,
           description: textController.text,
           createdAt: task.createdAt,
@@ -67,6 +69,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     } else {
       await Provider.of<Tasks>(context, listen: false).addTask(
         Task(
+          id: const Uuid().v4(),
           description: textController.text,
           createdAt: DateTime.now(),
           priority: priority,

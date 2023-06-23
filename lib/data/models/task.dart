@@ -1,11 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 part 'task.g.dart';
 
-@JsonSerializable(constructor: '_')
+@collection
+@JsonSerializable(constructor: '_forJson', ignoreUnannotated: true)
 class Task {
+  final Id isarId;
+
+  @JsonKey(name: 'id')
   final String id;
 
   @JsonKey(name: 'text')
@@ -32,14 +35,12 @@ class Task {
   )
   final DateTime changedAt;
 
+  @enumerated
   @JsonKey(name: 'importance')
   final Priority priority;
 
-  @JsonKey(
-    fromJson: _colorFromString,
-    toJson: _colorToString,
-  )
-  final Color? color;
+  @JsonKey(name: 'color')
+  final String? color;
 
   @JsonKey(name: 'last_updated_by')
   final String deviceId;
@@ -47,8 +48,8 @@ class Task {
   @JsonKey(name: 'done')
   final bool isChecked;
 
-  //Constructor for JsonSerializable
   Task._({
+    required this.isarId,
     required this.id,
     required this.description,
     required this.changedAt,
@@ -60,7 +61,21 @@ class Task {
     required this.color,
   });
 
+  //Constructor for JsonSerializable
+  Task._forJson({
+    required this.id,
+    required this.description,
+    required this.changedAt,
+    required this.priority,
+    required this.dueDate,
+    required this.createdAt,
+    required this.isChecked,
+    required this.deviceId,
+    required this.color,
+  }) : isarId = isarIdGenerator(id);
+
   Task({
+    required this.id,
     required this.description,
     required this.createdAt,
     this.color,
@@ -68,12 +83,13 @@ class Task {
     this.priority = Priority.none,
     this.isChecked = false,
     //TODO: implement device id logic
-  })  : id = const Uuid().v4(),
-        changedAt = DateTime.now(),
-        deviceId = 'unknown';
+  })  : changedAt = DateTime.now(),
+        deviceId = 'unknown',
+        isarId = isarIdGenerator(id);
 
   Task.withId({
     required this.id,
+    required this.isarId,
     required this.description,
     required this.createdAt,
     this.color,
@@ -97,19 +113,12 @@ class Task {
     return dateTime?.microsecondsSinceEpoch;
   }
 
-  static String? _colorToString(Color? color) {
-    return color?.value.toRadixString(16);
-  }
-
-  static Color? _colorFromString(String? strColor) {
-    return strColor == null ? null : Color(int.parse(strColor, radix: 16));
-  }
-
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskToJson(this);
 
   Task copyWith({
+    int? isarId,
     String? id,
     String? description,
     DateTime? changedAt,
@@ -118,9 +127,10 @@ class Task {
     DateTime? createdAt,
     bool? isChecked,
     String? deviceId,
-    Color? color,
+    String? color,
   }) {
     return Task._(
+      isarId: isarId ?? this.isarId,
       id: id ?? this.id,
       description: description ?? this.description,
       changedAt: changedAt ?? this.changedAt,
@@ -146,4 +156,10 @@ enum Priority {
   high,
   @JsonValue('low')
   low,
+}
+
+//Isar needs an id of type int and server of type string,
+//so I desided to calculate isarId of string id to get a number up to 16^6
+int isarIdGenerator(String id) {
+  return int.parse(id.substring(30), radix: 16);
 }

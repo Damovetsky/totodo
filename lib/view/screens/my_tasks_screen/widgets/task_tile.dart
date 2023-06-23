@@ -33,6 +33,7 @@ class _TaskTileState extends State<TaskTile> {
 
   @override
   Widget build(BuildContext context) {
+    bool checked = false;
     return Dismissible(
       key: ValueKey(widget.task.id),
       background: Container(
@@ -60,14 +61,18 @@ class _TaskTileState extends State<TaskTile> {
       onUpdate: (details) {
         if (details.direction == DismissDirection.startToEnd &&
             details.progress > 0.5 &&
-            !widget.task.isChecked) {
+            !widget.task.isChecked &&
+            !checked) {
+          checked = true;
           Provider.of<Tasks>(context, listen: false).toggleTask(widget.task.id);
         }
       },
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
-          unawaited(Provider.of<Tasks>(context, listen: false)
-              .removeTask(widget.task.id));
+          unawaited(
+            Provider.of<Tasks>(context, listen: false)
+                .removeTask(widget.task.id),
+          );
         }
       },
       confirmDismiss: (direction) {

@@ -84,7 +84,6 @@ class TaskServerImpl implements TaskServer {
   @override
   Future<void> patchTasks(List<Task> tasks, int revision) async {
     final url = Uri.parse('https://beta.mrdekk.ru/todobackend/list');
-    //???
     final encodedData = jsonEncode(tasks.map((task) => task.toJson()).toList());
     try {
       final response = await cl.patch(

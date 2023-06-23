@@ -1,3 +1,4 @@
+import '../databases/task_db.dart';
 import '../databases/task_server.dart';
 import '../models/task.dart';
 
@@ -16,6 +17,7 @@ abstract interface class TasksRepository {
 class TasksRepositoryImpl implements TasksRepository {
   //TODO organize di
   final TaskServer server = TaskServerImpl();
+  final TaskDB db = IsarService();
 
   //TODO get revision on repository init
   late int _revision;
@@ -23,6 +25,7 @@ class TasksRepositoryImpl implements TasksRepository {
   @override
   Future<void> addTask(Task newTask) async {
     await server.addTask(newTask, _revision);
+    await db.addTask(newTask, _revision);
     _revision++;
   }
 
@@ -45,12 +48,14 @@ class TasksRepositoryImpl implements TasksRepository {
   @override
   Future<void> removeTask(String id) async {
     await server.removeTask(id, _revision);
+    await db.removeTask(id, _revision);
     _revision++;
   }
 
   @override
   Future<void> updateTask(String id, Task newTask) async {
     await server.updateTask(id, newTask, _revision);
+    await db.updateTask(id, newTask, _revision);
     _revision++;
   }
 }

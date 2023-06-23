@@ -30,7 +30,7 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
         //darkTheme: darkTheme,
-        home: MyTasksScreen(),
+        home: const MyTasksScreen(),
         routes: {
           TaskDetailScreen.routeName: (context) => const TaskDetailScreen(),
         },
