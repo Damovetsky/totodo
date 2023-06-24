@@ -18,7 +18,7 @@ class CodegenLoader extends AssetLoader{
   "my_tasks": "My tasks",
   "completed": "Completed — ",
   "new_task": "New task",
-  "What_needs_to_be_done": "What needs to be done...",
+  "what_needs_to_be_done": "What needs to be done...",
   "priority": "Priority",
   "no_priority": "Default",
   "low": "Low",

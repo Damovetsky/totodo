@@ -159,7 +159,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: currentColorScheme(context).surface,
-                        hintText: LocaleKeys.What_needs_to_be_done.tr(),
+                        hintText: LocaleKeys.what_needs_to_be_done.tr(),
                         hintStyle: currentTextTheme(context)
                             .bodyMedium
                             ?.copyWith(

@@ -19,7 +19,6 @@ class TasksRepositoryImpl implements TasksRepository {
   final TaskServer server = TaskServerImpl();
   final TaskDB db = IsarService();
 
-  //TODO get revision on repository init
   late int _revision;
 
   @override
