@@ -16,10 +16,12 @@
 * В рамках данного задания работу с асинхронным кодом реализовывал с помощью async/await, потому как считаю такой код более читаемым.
 * интернацианализация сделана при помощи библиотеки easy_localization
 
+Если возникнут вопросы, можешь связаться со мной по тг: @Accordion_Palych
+Спасибо тебе за проверку моей работы и удачи на просторах Flutter! 
 
 
 Файлы APK лежат в релизах Github
-Ссылка: https://github.com/Damovetsky/totodo/releases/tag/v1.0.0
+Ссылка: https://github.com/Damovetsky/totodo/releases/tag/v1.1.0
 
 ![Alt text](/screenshots/Tasks_screen.png?raw=true "Экран со всеми задачами")
 ![Alt text](/screenshots/Task_details_screen.png?raw=true "Экран редактирования/создания задачи")
