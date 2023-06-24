@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -8,6 +9,7 @@ import '../../../core/ui/color_schemes.dart';
 import '../../../core/ui/dimentions.dart';
 import '../../../core/ui/text_styles.dart';
 import '../../../data/models/task.dart';
+import '../../../generated/locale_keys.g.dart';
 import '../../providers/tasks.dart';
 import 'widgets/calendar_switch.dart';
 import 'widgets/custom_dropdown_button.dart';
@@ -128,7 +130,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           }
                         }
                       },
-                      child: const Text('СОХРАНИТЬ'),
+                      child: Text(LocaleKeys.save.tr()),
                     ),
             ),
           )
@@ -157,7 +159,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: currentColorScheme(context).surface,
-                        hintText: 'Что надо сделать…',
+                        hintText: LocaleKeys.What_needs_to_be_done.tr(),
                         hintStyle: currentTextTheme(context)
                             .bodyMedium
                             ?.copyWith(
@@ -226,7 +228,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                 icon: const Icon(
                   Icons.delete,
                 ),
-                label: const Text('Удалить'),
+                label: Text(LocaleKeys.delete.tr()),
               ),
             ),
           ],

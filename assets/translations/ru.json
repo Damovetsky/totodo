@@ -1,0 +1,15 @@
+{
+    "my_tasks": "Мои дела",
+    "completed": "Выполнено — ",
+    "new_task": "Новое",
+    "what_needs_to_be_done": "Что надо сделать…",
+    "priority": "Важность",
+    "no_priority": "Нет",
+    "low": "Низкий",
+    "high": "!! Высокий",
+    "save": "СОХРАНИТЬ",
+    "delete": "Удалить",
+    "do_before": "Сделать до",
+    "cancel": "ОТМЕНА",
+    "done": "ГОТОВО"
+}

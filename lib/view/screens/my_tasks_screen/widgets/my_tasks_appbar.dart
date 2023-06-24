@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/ui/color_schemes.dart';
 import '../../../../core/ui/text_styles.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../providers/tasks.dart';
 import 'visibility_button.dart';
 
@@ -29,7 +31,7 @@ class MyTasksAppBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'Мои дела',
+                  LocaleKeys.my_tasks.tr(),
                   style: currentTextTheme(context).titleLarge?.copyWith(
                         color: currentColorScheme(context).onBackground,
                       ),
@@ -40,12 +42,27 @@ class MyTasksAppBar extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Выполнено — ${Provider.of<Tasks>(context).getCompletedTaskCount()}',
-                      style: currentTextTheme(context).bodyMedium?.copyWith(
-                            color: currentColorScheme(context).onSurfaceVariant,
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(text: LocaleKeys.completed.tr()),
+                          TextSpan(
+                            text:
+                                '${Provider.of<Tasks>(context).getCompletedTaskCount()}',
                           ),
+                        ],
+                        style: currentTextTheme(context).bodyMedium?.copyWith(
+                              color:
+                                  currentColorScheme(context).onSurfaceVariant,
+                            ),
+                      ),
                     ),
+                    // Text(
+                    //   'Выполнено — ${Provider.of<Tasks>(context).getCompletedTaskCount()}',
+                    //   style: currentTextTheme(context).bodyMedium?.copyWith(
+                    //         color: currentColorScheme(context).onSurfaceVariant,
+                    //       ),
+                    // ),
                     const VisibilityButton()
                   ],
                 ),

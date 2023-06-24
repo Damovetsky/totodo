@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -139,14 +140,24 @@ class _TaskTileState extends State<TaskTile> {
                         ],
                       ),
                     ),
-                    if (widget.task.dueDate != null)
+                    if (widget.task.dueDate != null &&
+                        context.locale == const Locale('ru'))
                       Text(
                         DateFormat.yMMMMd('ru').format(widget.task.dueDate!),
                         style: currentTextTheme(context).titleSmall?.copyWith(
                               color:
                                   currentColorScheme(context).onSurfaceVariant,
                             ),
-                      )
+                      ),
+                    if (widget.task.dueDate != null &&
+                        context.locale == const Locale('en'))
+                      Text(
+                        DateFormat.yMMMMd().format(widget.task.dueDate!),
+                        style: currentTextTheme(context).titleSmall?.copyWith(
+                              color:
+                                  currentColorScheme(context).onSurfaceVariant,
+                            ),
+                      ),
                   ],
                 ),
               ),

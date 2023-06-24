@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../../core/ui/color_schemes.dart';
 import '../../../../core/ui/text_styles.dart';
+import '../../../../generated/locale_keys.g.dart';
 
 class CalendarSwitch extends StatefulWidget {
   const CalendarSwitch({
@@ -39,7 +41,7 @@ class _CalendarSwitchState extends State<CalendarSwitch> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Сделать до',
+                LocaleKeys.do_before.tr(),
                 style: currentTextTheme(context).bodyLarge,
               ),
               const SizedBox(
@@ -56,14 +58,23 @@ class _CalendarSwitchState extends State<CalendarSwitch> {
                       });
                     }
                   },
-                  child: Text(
-                    DateFormat.yMMMMd('ru').format(
-                      date ?? DateTime.now(),
-                    ),
-                    style: currentTextTheme(context).labelLarge?.copyWith(
-                          color: currentColorScheme(context).primary,
+                  child: context.locale == const Locale('ru')
+                      ? Text(
+                          DateFormat.yMMMMd('ru').format(
+                            date ?? DateTime.now(),
+                          ),
+                          style: currentTextTheme(context).labelLarge?.copyWith(
+                                color: currentColorScheme(context).primary,
+                              ),
+                        )
+                      : Text(
+                          DateFormat.yMMMMd().format(
+                            date ?? DateTime.now(),
+                          ),
+                          style: currentTextTheme(context).labelLarge?.copyWith(
+                                color: currentColorScheme(context).primary,
+                              ),
                         ),
-                  ),
                 ),
             ],
           ),
@@ -98,8 +109,8 @@ Future<DateTime?> _showDatePicker(BuildContext context, DateTime? dueDate) {
   return showDatePicker(
     helpText: '',
     initialDatePickerMode: DatePickerMode.day,
-    confirmText: 'ГОТОВО',
-    cancelText: 'ОТМЕНА',
+    confirmText: LocaleKeys.done.tr(),
+    cancelText: LocaleKeys.cancel.tr(),
     context: context,
     initialDate: dueDate ?? DateTime.now(),
     firstDate: DateTime.now(),

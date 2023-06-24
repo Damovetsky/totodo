@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/ui/color_schemes.dart';
 import '../../../../core/ui/text_styles.dart';
 import '../../../../data/models/task.dart';
+import '../../../../generated/locale_keys.g.dart';
 
 class CustomDropdownButton extends StatelessWidget {
   const CustomDropdownButton({
@@ -32,32 +34,32 @@ class CustomDropdownButton extends StatelessWidget {
             top: 16,
             bottom: 8,
           ),
-          labelText: 'Важность',
+          labelText: LocaleKeys.priority.tr(),
           labelStyle: currentTextTheme(context).headlineSmall,
         ),
         alignment: Alignment.centerLeft,
         iconSize: 0,
         hint: Text(
-          'Нет',
+          LocaleKeys.no_priority.tr(),
           style: currentTextTheme(context).bodyMedium?.copyWith(
                 color: currentColorScheme(context).onSurfaceVariant,
               ),
         ),
         value: task?.priority,
-        items: const <DropdownMenuItem>[
+        items: <DropdownMenuItem>[
           DropdownMenuItem(
             value: Priority.none,
-            child: Text('Нет'),
+            child: Text(LocaleKeys.no_priority.tr()),
           ),
           DropdownMenuItem(
             value: Priority.low,
-            child: Text('Низкий'),
+            child: Text(LocaleKeys.low.tr()),
           ),
           DropdownMenuItem(
             value: Priority.high,
             child: Text(
-              '!! Высокий',
-              style: TextStyle(color: redColor),
+              LocaleKeys.high.tr(),
+              style: const TextStyle(color: redColor),
             ),
           ),
         ],

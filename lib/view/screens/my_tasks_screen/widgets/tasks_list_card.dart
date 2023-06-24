@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/ui/dimentions.dart';
 import '../../../../core/ui/text_styles.dart';
 import '../../../../core/ui/color_schemes.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../logger.dart';
 import '../../task_screen/task_detail_screen.dart';
 import './task_tile.dart';
@@ -96,7 +98,7 @@ class _TasksListCardState extends State<TasksListCard> {
                       padding: const EdgeInsets.only(left: 52, bottom: 8),
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Новое',
+                        LocaleKeys.new_task.tr(),
                         style: currentTextTheme(context).bodyMedium?.copyWith(
                               color:
                                   currentColorScheme(context).onSurfaceVariant,
