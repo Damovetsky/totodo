@@ -2,14 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../data/repositories/tasks_repository.dart';
+import '../../domain/models/task_model.dart';
+import '../../domain/repositories/tasks_repository.dart';
 import '../../logger.dart';
-import '../../data/models/task.dart';
 
 class Tasks with ChangeNotifier {
-  final TasksRepository tasksRepos = TasksRepositoryImpl();
+  //TODO: DI
+  final TasksRepository tasksRepos;
+  Tasks(this.tasksRepos);
 
-  List<Task> _tasks = [
+  List<TaskModel> _tasks = [
     // Task(
     //   description: 'Приветствую тебя на экране с задачами моего приложения!',
     //   createdAt: DateTime.now(),
@@ -99,7 +101,7 @@ class Tasks with ChangeNotifier {
 
   bool _showCompleted = true;
 
-  List<Task> get tasks {
+  List<TaskModel> get tasks {
     return [..._tasks];
   }
 
@@ -140,7 +142,7 @@ class Tasks with ChangeNotifier {
     }
   }
 
-  Future<void> updateTask(String id, Task newTask) async {
+  Future<void> updateTask(String id, TaskModel newTask) async {
     final taskIndex = _tasks.indexWhere((task) => task.id == id);
     if (taskIndex != -1) {
       if (taskIndex >= 0) {
@@ -153,7 +155,7 @@ class Tasks with ChangeNotifier {
     }
   }
 
-  Future<void> addTask(Task newTask) async {
+  Future<void> addTask(TaskModel newTask) async {
     await tasksRepos.addTask(newTask);
     _tasks.add(newTask);
     notifyListeners();

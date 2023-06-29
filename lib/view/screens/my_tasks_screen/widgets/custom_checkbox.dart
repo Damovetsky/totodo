@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/ui/color_schemes.dart';
-import '../../../../data/models/task.dart';
+import '../../../../domain/models/task_model.dart';
 import '../../../providers/tasks.dart';
 
 class CustomCheckbox extends StatelessWidget {
@@ -11,7 +11,7 @@ class CustomCheckbox extends StatelessWidget {
     required this.task,
   });
 
-  final Task task;
+  final TaskModel task;
 
   @override
   Widget build(BuildContext context) {

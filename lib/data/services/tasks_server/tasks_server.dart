@@ -2,44 +2,61 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/error/exeption.dart';
-import '../../logger.dart';
-import '../models/task.dart';
+import '../../../constants.dart';
+import '../../../core/error/exeption.dart';
+import '../../../logger.dart';
+import 'constants/server_constants.dart';
+import 'dto/task_dto.dart';
+import 'dto/task_response_dto.dart';
+import 'dto/tasks_list_dto.dart';
 
-abstract interface class TaskServer {
-  Future<Map<String, dynamic>> getTasksList();
+abstract interface class TasksServer {
+  Future<TasksListDto> getTasksList();
 
-  Future<void> addTask(Task newTask, int revision);
+  Future<TaskResponseDto> addTask(TaskDto newTask);
 
-  Future<void> removeTask(String id, int revision);
+  Future<TaskResponseDto> removeTask(String id);
 
-  Future<void> updateTask(String id, Task newTask, int revision);
+  Future<TaskResponseDto> updateTask(String id, TaskDto newTask);
 
-  Future<void> patchTasks(List<Task> tasks, int revision);
+  Future<TasksListDto> patchTasks(List<TaskDto> tasks);
 
-  Future<void> getTask(String id);
+  Future<TaskResponseDto> getTask(String id);
 }
 
-class TaskServerImpl implements TaskServer {
+class TasksServerImpl implements TasksServer {
   final cl = _MyClient();
+  final SharedPreferences _prefs;
+
+  TasksServerImpl(this._prefs);
 
   @override
-  Future<void> addTask(Task newTask, int revision) async {
-    final url = Uri.parse('https://beta.mrdekk.ru/todobackend/list');
+  Future<TaskResponseDto> addTask(TaskDto newTask) async {
+    final url =
+        Uri.parse('${ServerConstants.baseUrl}${ServerConstants.listEndpoint}');
     final encodedData = json.encode({'element': newTask.toJson()});
     try {
       final response = await cl.post(
         url,
         headers: {
-          'X-Last-Known-Revision': '$revision',
+          'X-Last-Known-Revision':
+              '${_prefs.getInt(sharedPreferencesRevisionKey)}',
         },
         body: encodedData,
       );
       switch (response.statusCode) {
         case 200:
           {
-            return;
+            final taskResponseDto = TaskResponseDto.fromJson(
+              json.decode(response.body) as Map<String, dynamic>,
+            );
+            _prefs.setInt(
+              sharedPreferencesRevisionKey,
+              taskResponseDto.revision,
+            );
+            return taskResponseDto;
           }
         case 400:
           {
@@ -76,27 +93,36 @@ class TaskServerImpl implements TaskServer {
 
   //Maybe I'll need it in the future
   @override
-  Future<void> getTask(String id) {
+  Future<TaskResponseDto> getTask(String id) {
     // TODO: implement getTask
     throw UnimplementedError();
   }
 
   @override
-  Future<void> patchTasks(List<Task> tasks, int revision) async {
-    final url = Uri.parse('https://beta.mrdekk.ru/todobackend/list');
+  Future<TasksListDto> patchTasks(List<TaskDto> tasks) async {
+    final url =
+        Uri.parse('${ServerConstants.baseUrl}${ServerConstants.listEndpoint}');
     final encodedData = jsonEncode(tasks.map((task) => task.toJson()).toList());
     try {
       final response = await cl.patch(
         url,
         headers: {
-          'X-Last-Known-Revision': '$revision',
+          'X-Last-Known-Revision':
+              '${_prefs.getInt(sharedPreferencesRevisionKey)}',
         },
         body: encodedData,
       );
       switch (response.statusCode) {
         case 200:
           {
-            return;
+            final extractedData = TasksListDto.fromJson(
+              json.decode(response.body) as Map<String, dynamic>,
+            );
+            _prefs.setInt(
+              sharedPreferencesRevisionKey,
+              extractedData.revision,
+            );
+            return extractedData;
           }
         case 400:
           {
@@ -129,19 +155,29 @@ class TaskServerImpl implements TaskServer {
   }
 
   @override
-  Future<void> removeTask(String id, int revision) async {
-    final url = Uri.parse('https://beta.mrdekk.ru/todobackend/list/$id');
+  Future<TaskResponseDto> removeTask(String id) async {
+    final url = Uri.parse(
+      '${ServerConstants.baseUrl}${ServerConstants.listEndpoint}$id',
+    );
     try {
       final response = await cl.delete(
         url,
         headers: {
-          'X-Last-Known-Revision': '$revision',
+          'X-Last-Known-Revision':
+              '${_prefs.getInt(sharedPreferencesRevisionKey)}',
         },
       );
       switch (response.statusCode) {
         case 200:
           {
-            return;
+            final taskResponseDto = TaskResponseDto.fromJson(
+              json.decode(response.body) as Map<String, dynamic>,
+            );
+            _prefs.setInt(
+              sharedPreferencesRevisionKey,
+              taskResponseDto.revision,
+            );
+            return taskResponseDto;
           }
         case 400:
           {
@@ -152,6 +188,11 @@ class TaskServerImpl implements TaskServer {
             logger.e('Bad http request to the server');
             throw BadHttpRequestException();
           }
+        case 404:
+          {
+            logger.e('Task was not found while deleting');
+            throw ElementNotFoundException();
+          }
         case 500:
           {
             logger.e('Server is not feeling well today');
@@ -178,21 +219,31 @@ class TaskServerImpl implements TaskServer {
   }
 
   @override
-  Future<void> updateTask(String id, Task newTask, int revision) async {
-    final url = Uri.parse('https://beta.mrdekk.ru/todobackend/list/$id');
+  Future<TaskResponseDto> updateTask(String id, TaskDto newTask) async {
+    final url = Uri.parse(
+      '${ServerConstants.baseUrl}${ServerConstants.listEndpoint}$id',
+    );
     final encodedData = json.encode({'element': newTask.toJson()});
     try {
       final response = await cl.put(
         url,
         headers: {
-          'X-Last-Known-Revision': '$revision',
+          'X-Last-Known-Revision':
+              '${_prefs.getInt(sharedPreferencesRevisionKey)}',
         },
         body: encodedData,
       );
       switch (response.statusCode) {
         case 200:
           {
-            return;
+            final taskResponseDto = TaskResponseDto.fromJson(
+              json.decode(response.body) as Map<String, dynamic>,
+            );
+            _prefs.setInt(
+              sharedPreferencesRevisionKey,
+              taskResponseDto.revision,
+            );
+            return taskResponseDto;
           }
         case 400:
           {
@@ -229,15 +280,21 @@ class TaskServerImpl implements TaskServer {
   }
 
   @override
-  Future<Map<String, dynamic>> getTasksList() async {
-    final url = Uri.parse('https://beta.mrdekk.ru/todobackend/list');
+  Future<TasksListDto> getTasksList() async {
+    final url =
+        Uri.parse('${ServerConstants.baseUrl}${ServerConstants.listEndpoint}');
     try {
       final response = await cl.get(url);
       switch (response.statusCode) {
         case 200:
           {
-            final extractedData =
-                json.decode(response.body) as Map<String, dynamic>;
+            final extractedData = TasksListDto.fromJson(
+              json.decode(response.body) as Map<String, dynamic>,
+            );
+            _prefs.setInt(
+              sharedPreferencesRevisionKey,
+              extractedData.revision,
+            );
             return extractedData;
           }
         case 400:
@@ -275,7 +332,7 @@ class _MyClient extends BaseClient {
   final client = Client();
   @override
   Future<StreamedResponse> send(BaseRequest request) {
-    request.headers['Authorization'] = 'Bearer parachaplain';
+    request.headers['Authorization'] = 'Bearer ${ServerConstants.accessToken}';
     return client.send(request);
   }
 }

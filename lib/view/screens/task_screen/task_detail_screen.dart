@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +10,7 @@ import 'package:uuid/uuid.dart';
 import '../../../core/ui/color_schemes.dart';
 import '../../../core/ui/dimentions.dart';
 import '../../../core/ui/text_styles.dart';
-import '../../../data/models/task.dart';
+import '../../../domain/models/task_model.dart';
 import '../../../generated/locale_keys.g.dart';
 import '../../providers/tasks.dart';
 import 'widgets/calendar_switch.dart';
@@ -24,7 +26,7 @@ class TaskDetailScreen extends StatefulWidget {
 }
 
 class _TaskDetailScreenState extends State<TaskDetailScreen> {
-  Task? argTask;
+  TaskModel? argTask;
   late final TextEditingController textController;
   Priority priority = Priority.none;
   DateTime? date;
@@ -35,7 +37,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      argTask = ModalRoute.of(context)?.settings.arguments as Task?;
+      argTask = ModalRoute.of(context)?.settings.arguments as TaskModel?;
       textController = TextEditingController(text: argTask?.description);
       if (argTask != null) {
         priority = argTask!.priority;
@@ -52,30 +54,35 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     super.dispose();
   }
 
-  Future<void> _saveChanges(Task? task) async {
+  Future<void> _saveChanges(TaskModel? task) async {
     setState(() {
       _isLoading = true;
     });
     if (task != null) {
       await Provider.of<Tasks>(context, listen: false).updateTask(
         task.id,
-        Task(
+        TaskModel(
           id: task.id,
           description: textController.text,
           createdAt: task.createdAt,
           priority: priority,
           isChecked: task.isChecked,
           dueDate: date,
+          changedAt: DateTime.now(),
+          deviceId: await getDeviceModel(),
         ),
       );
     } else {
       await Provider.of<Tasks>(context, listen: false).addTask(
-        Task(
+        TaskModel(
           id: const Uuid().v4(),
           description: textController.text,
           createdAt: DateTime.now(),
           priority: priority,
           dueDate: date,
+          changedAt: DateTime.now(),
+          deviceId: await getDeviceModel(),
+          isChecked: false,
         ),
       );
     }
@@ -236,4 +243,18 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       ),
     );
   }
+}
+
+//TODO: maybe make this pltform id query ones on app initialization
+Future<String> getDeviceModel() async {
+  final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  if (Platform.isAndroid) {
+    final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    return androidInfo.model;
+  }
+  if (Platform.isIOS) {
+    final iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor ?? 'unknown';
+  }
+  return 'unknown';
 }

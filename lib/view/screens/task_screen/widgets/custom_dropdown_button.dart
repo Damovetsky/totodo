@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/ui/color_schemes.dart';
 import '../../../../core/ui/text_styles.dart';
-import '../../../../data/models/task.dart';
+import '../../../../domain/models/task_model.dart';
 import '../../../../generated/locale_keys.g.dart';
 
 class CustomDropdownButton extends StatelessWidget {
@@ -13,7 +13,7 @@ class CustomDropdownButton extends StatelessWidget {
     required this.getPriority,
   });
 
-  final Task? task;
+  final TaskModel? task;
   final Function getPriority;
 
   @override
