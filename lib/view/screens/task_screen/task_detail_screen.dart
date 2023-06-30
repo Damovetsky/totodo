@@ -243,7 +243,6 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   }
 }
 
-//TODO: maybe make this pltform id query ones on app initialization
 Future<String> getDeviceModel() async {
   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   if (Platform.isAndroid) {

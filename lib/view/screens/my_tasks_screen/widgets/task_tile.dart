@@ -28,7 +28,7 @@ class _TaskTileState extends State<TaskTile> {
   @override
   void initState() {
     super.initState();
-    initializeDateFormatting('ru');
+    unawaited(initializeDateFormatting('ru'));
   }
 
   @override
@@ -163,9 +163,11 @@ class _TaskTileState extends State<TaskTile> {
             ),
             IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(
-                  TaskDetailScreen.routeName,
-                  arguments: widget.task,
+                unawaited(
+                  Navigator.of(context).pushNamed(
+                    TaskDetailScreen.routeName,
+                    arguments: widget.task,
+                  ),
                 );
               },
               icon: Icon(

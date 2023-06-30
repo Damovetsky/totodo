@@ -91,8 +91,10 @@ class _TasksListCardState extends State<TasksListCard> {
                     shrinkWrap: true,
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.of(context)
-                        .pushNamed(TaskDetailScreen.routeName),
+                    onTap: () => unawaited(
+                      Navigator.of(context)
+                          .pushNamed(TaskDetailScreen.routeName),
+                    ),
                     child: Container(
                       height: 48,
                       padding: const EdgeInsets.only(left: 52, bottom: 8),

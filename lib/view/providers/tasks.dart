@@ -2,14 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../core/error/exeption.dart';
 import '../../domain/models/task_model.dart';
 import '../../domain/repositories/tasks_repository.dart';
 import '../../logger.dart';
 
+@injectable
 class Tasks with ChangeNotifier {
-  //TODO: DI
   final TasksRepository tasksRepos;
   Tasks(this.tasksRepos);
 

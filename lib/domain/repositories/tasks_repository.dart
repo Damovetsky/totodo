@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
@@ -30,8 +31,8 @@ abstract interface class TasksRepository {
   Future<void> removeServerTask(String id);
 }
 
+@LazySingleton(as: TasksRepository)
 class TasksRepositoryImpl implements TasksRepository {
-  //TODO organize di
   final SharedPreferences prefs;
   final TasksServer server;
   final TasksDB db;

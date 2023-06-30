@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants.dart';
@@ -22,10 +23,9 @@ abstract interface class TasksServer {
   Future<TaskResponseDto> updateTask(String id, TaskDto newTask);
 
   Future<TasksListDto> patchTasks(List<TaskDto> tasks);
-
-  Future<TaskResponseDto> getTask(String id);
 }
 
+@Injectable(as: TasksServer)
 class TasksServerImpl implements TasksServer {
   final cl = _MyClient();
   final SharedPreferences _prefs;
@@ -99,13 +99,6 @@ class TasksServerImpl implements TasksServer {
     } catch (e) {
       rethrow;
     }
-  }
-
-  //Maybe I'll need it in the future
-  @override
-  Future<TaskResponseDto> getTask(String id) {
-    // TODO: implement getTask
-    throw UnimplementedError();
   }
 
   @override

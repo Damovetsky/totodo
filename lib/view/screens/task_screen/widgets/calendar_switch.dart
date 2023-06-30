@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -27,7 +29,7 @@ class _CalendarSwitchState extends State<CalendarSwitch> {
   void initState() {
     date = widget.dueDate;
     super.initState();
-    initializeDateFormatting('ru');
+    unawaited(initializeDateFormatting('ru'));
   }
 
   @override

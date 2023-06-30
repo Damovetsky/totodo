@@ -12,8 +12,7 @@ enum Priority {
 
 @collection
 class TaskDB {
-  //???
-  Id get isarId => intIdFromUuid.generate(uuid);
+  Id get isarId => IntIdFromUuid.generate(uuid);
   String uuid;
   final String title;
   final bool isChecked;
