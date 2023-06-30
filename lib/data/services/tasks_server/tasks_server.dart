@@ -56,6 +56,14 @@ class TasksServerImpl implements TasksServer {
               sharedPreferencesRevisionKey,
               taskResponseDto.revision,
             );
+            _prefs.setInt(
+              lastServerRevisionKey,
+              taskResponseDto.revision,
+            );
+            _prefs.setInt(
+              lastServerRevisionTimeKey,
+              DateTime.now().millisecondsSinceEpoch,
+            );
             return taskResponseDto;
           }
         case 400:
@@ -86,6 +94,8 @@ class TasksServerImpl implements TasksServer {
     } on FormatException {
       logger.e('Bad response format');
       rethrow;
+    } on UnsynchronizedDataException {
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -102,7 +112,8 @@ class TasksServerImpl implements TasksServer {
   Future<TasksListDto> patchTasks(List<TaskDto> tasks) async {
     final url =
         Uri.parse('${ServerConstants.baseUrl}${ServerConstants.listEndpoint}');
-    final encodedData = jsonEncode(tasks.map((task) => task.toJson()).toList());
+    final encodedData = jsonEncode({'list': tasks});
+    //final encodedData = jsonEncode(tasks.map((task) => task.toJson()).toList());
     try {
       final response = await cl.patch(
         url,
@@ -121,6 +132,14 @@ class TasksServerImpl implements TasksServer {
             _prefs.setInt(
               sharedPreferencesRevisionKey,
               extractedData.revision,
+            );
+            _prefs.setInt(
+              lastServerRevisionKey,
+              extractedData.revision,
+            );
+            _prefs.setInt(
+              lastServerRevisionTimeKey,
+              DateTime.now().millisecondsSinceEpoch,
             );
             return extractedData;
           }
@@ -150,7 +169,7 @@ class TasksServerImpl implements TasksServer {
       rethrow;
     } catch (e) {
       logger.e('An error occured when conecting with server: $e');
-      throw UnknownException();
+      rethrow;
     }
   }
 
@@ -176,6 +195,14 @@ class TasksServerImpl implements TasksServer {
             _prefs.setInt(
               sharedPreferencesRevisionKey,
               taskResponseDto.revision,
+            );
+            _prefs.setInt(
+              lastServerRevisionKey,
+              taskResponseDto.revision,
+            );
+            _prefs.setInt(
+              lastServerRevisionTimeKey,
+              DateTime.now().millisecondsSinceEpoch,
             );
             return taskResponseDto;
           }
@@ -212,6 +239,8 @@ class TasksServerImpl implements TasksServer {
     } on FormatException {
       logger.e('Bad response format');
       rethrow;
+    } on UnsynchronizedDataException {
+      rethrow;
     } catch (e) {
       logger.e('An error occured when conecting with server: $e');
       throw UnknownException();
@@ -243,6 +272,14 @@ class TasksServerImpl implements TasksServer {
               sharedPreferencesRevisionKey,
               taskResponseDto.revision,
             );
+            _prefs.setInt(
+              lastServerRevisionKey,
+              taskResponseDto.revision,
+            );
+            _prefs.setInt(
+              lastServerRevisionTimeKey,
+              DateTime.now().millisecondsSinceEpoch,
+            );
             return taskResponseDto;
           }
         case 400:
@@ -272,6 +309,8 @@ class TasksServerImpl implements TasksServer {
       rethrow;
     } on FormatException {
       logger.e('Bad response format');
+      rethrow;
+    } on UnsynchronizedDataException {
       rethrow;
     } catch (e) {
       logger.e('An error occured when conecting with server: $e');

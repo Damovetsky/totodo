@@ -59,5 +59,6 @@ Future<TasksRepository> initRepo() async {
   final prefs = await SharedPreferences.getInstance();
   final tasksServer = TasksServerImpl(prefs);
   final tasksDB = IsarService();
+
   return TasksRepositoryImpl(db: tasksDB, server: tasksServer, prefs: prefs);
 }

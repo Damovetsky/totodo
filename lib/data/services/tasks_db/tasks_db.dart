@@ -39,13 +39,21 @@ class IsarService implements TasksDB {
   @override
   Future<List<TaskDB>> getTasksList() async {
     final isar = await db;
-    return await isar.taskDBs.where().findAll();
+    final isarTasks = await isar.taskDBs.where().findAll();
+    //TODO: Realize better sorting everywhere
+    isarTasks.sort(
+      (a, b) => b.createdAt.compareTo(a.createdAt),
+    );
+    return isarTasks;
   }
 
   @override
-  Future<void> patchTasks(List<TaskDB> tasks) {
-    // TODO: implement patchTasks
-    throw UnimplementedError();
+  Future<void> patchTasks(List<TaskDB> tasks) async {
+    final isar = await db;
+    isar.writeTxnSync(() {
+      isar.taskDBs.clearSync();
+      isar.taskDBs.putAllSync(tasks);
+    });
   }
 
   @override

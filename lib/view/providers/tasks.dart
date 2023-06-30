@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../core/error/exeption.dart';
 import '../../domain/models/task_model.dart';
 import '../../domain/repositories/tasks_repository.dart';
 import '../../logger.dart';
@@ -89,6 +91,12 @@ class Tasks with ChangeNotifier {
     // ),
   ];
 
+  DataStatus _dataStatus = DataStatus.unsync;
+
+  DataStatus get dataStatus {
+    return _dataStatus;
+  }
+
   int getCompletedTaskCount() {
     int count = 0;
     for (final element in _tasks) {
@@ -110,7 +118,18 @@ class Tasks with ChangeNotifier {
   }
 
   Future<void> fetchAndSetTasks() async {
-    _tasks = await tasksRepos.getTasks();
+    _tasks = await tasksRepos.getDBTasks();
+    _dataStatus = DataStatus.loading;
+    notifyListeners();
+    try {
+      final newTasks = await tasksRepos.getServerTasks();
+      if (newTasks != null) {
+        _tasks = newTasks;
+      }
+      _dataStatus = DataStatus.sync;
+    } on SocketException {
+      _dataStatus = DataStatus.unsync;
+    }
     notifyListeners();
   }
 
@@ -118,13 +137,19 @@ class Tasks with ChangeNotifier {
     final index = _tasks.indexWhere((task) => task.id == id);
     if (index != -1) {
       final status = _tasks[index].isChecked;
-      _tasks[index] = _tasks[index].copyWith(isChecked: !status);
-      await tasksRepos.updateTask(
-        id,
-        _tasks[index],
-      );
-
+      _tasks[index] =
+          _tasks[index].copyWith(isChecked: !status, changedAt: DateTime.now());
       notifyListeners();
+      await tasksRepos.updateDBTask(id, _tasks[index]);
+      try {
+        await tasksRepos.updateServerTask(id, _tasks[index]);
+      } on SocketException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+      } on UnsynchronizedDataException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+      }
     } else {
       logger.e('Task index was not found when checking the checkbox');
     }
@@ -135,7 +160,16 @@ class Tasks with ChangeNotifier {
       final task = _tasks.firstWhere((element) => element.id == id);
       _tasks.remove(task);
       notifyListeners();
-      await tasksRepos.removeTask(id);
+      await tasksRepos.removeDBTask(id);
+      try {
+        await tasksRepos.removeServerTask(id);
+      } on SocketException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+      } on UnsynchronizedDataException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+      }
     } catch (error) {
       logger.e(error);
       logger.e('Task was not found when removing it');
@@ -149,17 +183,35 @@ class Tasks with ChangeNotifier {
         _tasks[taskIndex] = newTask;
       }
       notifyListeners();
-      await tasksRepos.updateTask(id, newTask);
+      await tasksRepos.updateDBTask(id, newTask);
+      try {
+        await tasksRepos.updateServerTask(id, newTask);
+      } on SocketException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+      } on UnsynchronizedDataException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+      }
     } else {
       logger.e('Task was not found when updating it');
     }
   }
 
   Future<void> addTask(TaskModel newTask) async {
-    await tasksRepos.addTask(newTask);
     _tasks.add(newTask);
     notifyListeners();
+    await tasksRepos.addDBTask(newTask);
     logger.i('New task added: $newTask');
+    try {
+      await tasksRepos.addServerTask(newTask);
+    } on SocketException {
+      _dataStatus = DataStatus.unsync;
+      notifyListeners();
+    } on UnsynchronizedDataException {
+      _dataStatus = DataStatus.unsync;
+      notifyListeners();
+    }
   }
 
   bool toggleCompletedTasksVisibility() {
@@ -167,4 +219,10 @@ class Tasks with ChangeNotifier {
     notifyListeners();
     return _showCompleted;
   }
+}
+
+enum DataStatus {
+  sync,
+  loading,
+  unsync,
 }

@@ -4,10 +4,15 @@ import '../../../../helpers/int_id_from_uuid.dart';
 
 part 'task_db.g.dart';
 
-enum Priority { no, low, high }
+enum Priority {
+  no,
+  low,
+  high,
+}
 
 @collection
 class TaskDB {
+  //???
   Id get isarId => intIdFromUuid.generate(uuid);
   String uuid;
   final String title;

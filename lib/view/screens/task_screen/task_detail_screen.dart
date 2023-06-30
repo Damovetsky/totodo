@@ -55,9 +55,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   }
 
   Future<void> _saveChanges(TaskModel? task) async {
-    setState(() {
-      _isLoading = true;
-    });
+    // setState(() {
+    //   _isLoading = true;
+    // });
     if (task != null) {
       await Provider.of<Tasks>(context, listen: false).updateTask(
         task.id,
@@ -86,9 +86,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         ),
       );
     }
-    setState(() {
-      _isLoading = false;
-    });
+    // setState(() {
+    //   _isLoading = false;
+    // });
   }
 
   @override
@@ -131,10 +131,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   : TextButton(
                       onPressed: () async {
                         if (textController.text.isNotEmpty) {
-                          await _saveChanges(task);
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
-                          }
+                          _saveChanges(task);
+                          Navigator.of(context).pop();
                         }
                       },
                       child: Text(LocaleKeys.save.tr()),
