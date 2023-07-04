@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/di/di.dart';
 import '../../../../core/ui/color_schemes.dart';
 import '../../../../core/ui/text_styles.dart';
 import '../../../../domain/models/task_model.dart';
+import '../../../navigation/tasks_router_deligate.dart';
 import '../../../providers/tasks.dart';
-import '../../task_screen/task_detail_screen.dart';
 import 'custom_checkbox.dart';
 
 class TaskTile extends StatefulWidget {
@@ -162,14 +163,9 @@ class _TaskTileState extends State<TaskTile> {
               ),
             ),
             IconButton(
-              onPressed: () {
-                unawaited(
-                  Navigator.of(context).pushNamed(
-                    TaskDetailScreen.routeName,
-                    arguments: widget.task,
-                  ),
-                );
-              },
+              onPressed: () => getIt
+                  .get<TasksRouterDeligate>()
+                  .showTaskEditingScreen(widget.task),
               icon: Icon(
                 Icons.info_outline,
                 color: currentColorScheme(context).onSurfaceVariant,

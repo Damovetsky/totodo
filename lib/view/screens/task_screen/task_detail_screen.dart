@@ -19,14 +19,15 @@ import 'widgets/custom_dropdown_button.dart';
 class TaskDetailScreen extends StatefulWidget {
   static const routeName = '/task-detail';
 
-  const TaskDetailScreen({super.key});
+  final TaskModel? task;
+
+  const TaskDetailScreen({super.key, this.task});
 
   @override
   State<TaskDetailScreen> createState() => _TaskDetailScreenState();
 }
 
 class _TaskDetailScreenState extends State<TaskDetailScreen> {
-  TaskModel? argTask;
   late final TextEditingController textController;
   Priority priority = Priority.none;
   DateTime? date;
@@ -37,11 +38,10 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      argTask = ModalRoute.of(context)?.settings.arguments as TaskModel?;
-      textController = TextEditingController(text: argTask?.description);
-      if (argTask != null) {
-        priority = argTask!.priority;
-        date = argTask!.dueDate;
+      textController = TextEditingController(text: widget.task?.description);
+      if (widget.task != null) {
+        priority = widget.task!.priority;
+        date = widget.task!.dueDate;
       }
     }
     _isInit = false;
@@ -93,7 +93,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final task = argTask;
+    final task = widget.task;
 
     void getPriority(Priority newPriority) {
       priority = newPriority;

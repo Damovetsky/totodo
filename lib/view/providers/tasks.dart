@@ -9,7 +9,7 @@ import '../../domain/models/task_model.dart';
 import '../../domain/repositories/tasks_repository.dart';
 import '../../logger.dart';
 
-@injectable
+@lazySingleton
 class Tasks with ChangeNotifier {
   final TasksRepository tasksRepos;
   Tasks(this.tasksRepos);

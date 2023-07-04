@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import './core/ui/theme.dart';
 import 'core/di/di.dart';
 import 'generated/codegen_loader.g.dart';
-import 'view/screens/my_tasks_screen/my_tasks_screen.dart';
+import 'view/navigation/tasks_route_information_parser.dart';
+import 'view/navigation/tasks_router_deligate.dart';
 import 'view/providers/tasks.dart';
-import 'view/screens/task_screen/task_detail_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +36,7 @@ class App extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'ToToDo',
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
@@ -44,10 +44,8 @@ class App extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home: const MyTasksScreen(),
-      routes: {
-        TaskDetailScreen.routeName: (context) => const TaskDetailScreen(),
-      },
+      routerDelegate: getIt.get<TasksRouterDeligate>(),
+      routeInformationParser: getIt.get<TasksRouteInformationParser>(),
     );
   }
 }

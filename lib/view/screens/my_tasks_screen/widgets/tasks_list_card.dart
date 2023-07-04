@@ -4,12 +4,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/di/di.dart';
 import '../../../../core/ui/dimentions.dart';
 import '../../../../core/ui/text_styles.dart';
 import '../../../../core/ui/color_schemes.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../../../logger.dart';
-import '../../task_screen/task_detail_screen.dart';
+import '../../../navigation/tasks_router_deligate.dart';
 import './task_tile.dart';
 import '../../../providers/tasks.dart';
 
@@ -91,10 +92,8 @@ class _TasksListCardState extends State<TasksListCard> {
                     shrinkWrap: true,
                   ),
                   GestureDetector(
-                    onTap: () => unawaited(
-                      Navigator.of(context)
-                          .pushNamed(TaskDetailScreen.routeName),
-                    ),
+                    onTap: () =>
+                        getIt.get<TasksRouterDeligate>().showNewTaskScreen(),
                     child: Container(
                       height: 48,
                       padding: const EdgeInsets.only(left: 52, bottom: 8),
