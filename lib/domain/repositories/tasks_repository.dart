@@ -136,6 +136,8 @@ class TasksRepositoryImpl implements TasksRepository {
         }
         final newServerTasks = tasksList.map((task) => task.toDto()).toList();
         await server.patchTasks(newServerTasks);
+        final newDBTasks = tasksList.map((task) => task.toDB()).toList();
+        await db.patchTasks(newDBTasks);
         await prefs.setBool(hasLocalChangesKey, false);
         prioritySort(tasksList);
         return tasksList;

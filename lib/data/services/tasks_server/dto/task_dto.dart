@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'task_dto.g.dart';
@@ -9,7 +10,7 @@ enum Importance {
 }
 
 @JsonSerializable()
-class TaskDto {
+class TaskDto extends Equatable {
   final String id;
   final String text;
   final Importance importance;
@@ -38,4 +39,7 @@ class TaskDto {
   static TaskDto fromJson(Map<String, dynamic> json) => _$TaskDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskDtoToJson(this);
+
+  @override
+  List<Object?> get props => [id];
 }

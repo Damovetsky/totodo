@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 
 import '../../../../helpers/int_id_from_uuid.dart';
@@ -10,8 +11,8 @@ enum Priority {
   high,
 }
 
-@collection
-class TaskDB {
+@Collection(inheritance: false, ignore: {'props'})
+class TaskDB with EquatableMixin {
   Id get isarId => IntIdFromUuid.generate(uuid);
   String uuid;
   final String title;
@@ -35,4 +36,7 @@ class TaskDB {
     required this.changedAt,
     required this.lastUpdatedBy,
   });
+
+  @override
+  List<Object?> get props => [uuid];
 }

@@ -1,13 +1,14 @@
+import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
-//It is important to keep the correct order of items here
+//It is important to keep the correct order of items here (for sorting)
 enum Priority {
   high,
   none,
   low,
 }
 
-class TaskModel {
+class TaskModel extends Equatable {
   final String id;
   final String description;
   final bool isChecked;
@@ -67,4 +68,17 @@ class TaskModel {
     deviceId: $deviceId, 
     color: $color''';
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        description,
+        dueDate,
+        isChecked,
+        priority,
+        createdAt,
+        changedAt,
+        color,
+        deviceId
+      ];
 }
