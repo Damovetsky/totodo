@@ -24,7 +24,7 @@ class TaskDto extends Equatable {
   @JsonKey(name: 'last_updated_by')
   final String lastUpdatedBy;
 
-  TaskDto({
+  const TaskDto({
     required this.id,
     required this.text,
     required this.importance,

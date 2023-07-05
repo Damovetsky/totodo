@@ -15,7 +15,7 @@ final TasksListDto mockDtoTasksListWithFirstRevision = TasksListDto(
   revision: dataRevision1,
 );
 
-final TaskDto dtoTaskA = TaskDto(
+const TaskDto dtoTaskA = TaskDto(
   id: '110ec58a-a0f2-4ac4-8393-c866d813b8da',
   text: 'task a',
   done: true,
@@ -24,7 +24,7 @@ final TaskDto dtoTaskA = TaskDto(
   changedAt: 1001,
   lastUpdatedBy: 'phone',
 );
-final TaskDto dtoTaskB = TaskDto(
+const TaskDto dtoTaskB = TaskDto(
   id: '110ec58a-a0f2-4ac4-8393-c866d813b8db',
   text: 'task b',
   done: true,
@@ -34,7 +34,7 @@ final TaskDto dtoTaskB = TaskDto(
   lastUpdatedBy: 'phone',
 );
 
-final TaskDto dtoTaskC = TaskDto(
+const TaskDto dtoTaskC = TaskDto(
   id: '110ec58a-a0f2-4ac4-8393-c866d813b8dc',
   text: 'task c',
   done: true,

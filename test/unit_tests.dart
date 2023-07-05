@@ -205,7 +205,7 @@ void main() {
   group(
     'Dto task model tests',
     () {
-      final TaskDto task = dtoTaskA;
+      const TaskDto task = dtoTaskA;
 
       test(
         'Convert dto task to database task',

@@ -48,14 +48,17 @@ class CustomDropdownButton extends StatelessWidget {
         value: task?.priority,
         items: <DropdownMenuItem>[
           DropdownMenuItem(
+            key: const ValueKey('none'),
             value: Priority.none,
             child: Text(LocaleKeys.no_priority.tr()),
           ),
           DropdownMenuItem(
+            key: const ValueKey('low'),
             value: Priority.low,
             child: Text(LocaleKeys.low.tr()),
           ),
           DropdownMenuItem(
+            key: const ValueKey('high'),
             value: Priority.high,
             child: Text(
               LocaleKeys.high.tr(),

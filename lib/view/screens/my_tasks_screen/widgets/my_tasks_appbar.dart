@@ -57,12 +57,6 @@ class MyTasksAppBar extends StatelessWidget {
                             ),
                       ),
                     ),
-                    // Text(
-                    //   'Выполнено — ${Provider.of<Tasks>(context).getCompletedTaskCount()}',
-                    //   style: currentTextTheme(context).bodyMedium?.copyWith(
-                    //         color: currentColorScheme(context).onSurfaceVariant,
-                    //       ),
-                    // ),
                     const VisibilityButton()
                   ],
                 ),
