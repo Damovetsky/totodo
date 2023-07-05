@@ -47,13 +47,13 @@ class TasksRepositoryImpl implements TasksRepository {
   Future<List<TaskModel>> getDBTasks() async {
     final dbTasksList = await db.getTasksList();
     final tasksList = dbTasksList.map((dbTask) => dbTask.toDomain()).toList();
+    prioritySort(tasksList);
     return tasksList;
   }
 
   @override
   Future<List<TaskModel>?> getServerTasks() async {
-    final localRevision = prefs.getInt(sharedPreferencesRevisionKey) ?? 0;
-    final lastServerRevision = prefs.getInt(lastServerRevisionKey);
+    final localRevision = prefs.getInt(sharedPreferencesRevisionKey);
     try {
       final serverTasks = await server.getTasksList();
       final hasUnsyncLocalChanges = prefs.getBool(hasLocalChangesKey) ?? false;
@@ -66,13 +66,12 @@ class TasksRepositoryImpl implements TasksRepository {
         final tasksList = serverTasks.list
             .map((serverTask) => serverTask.toDomain())
             .toList();
+        prioritySort(tasksList);
         final newDBTasks =
             serverTasks.list.map((serverTask) => serverTask.toDB()).toList();
         await db.patchTasks(newDBTasks);
-        await prefs.setInt(lastServerRevisionKey, serverRevision);
         return tasksList;
-      } else if (hasUnsyncLocalChanges &&
-          lastServerRevision == serverRevision) {
+      } else if (hasUnsyncLocalChanges && localRevision == serverRevision) {
         logger.i('Server has old data, uploading data to database');
         final dbTasksList = await db.getTasksList();
         final newDtoTasks =
@@ -81,7 +80,7 @@ class TasksRepositoryImpl implements TasksRepository {
         await prefs.setBool(hasLocalChangesKey, false);
         return null;
       } else {
-        //if (hasUnsyncLocalChanges && lastServerRevision != serverRevision)
+        //if (hasUnsyncLocalChanges && localRevision != serverRevision)
         //Wake the f up samurai, we have a conflict to resolve!
         //Get last server revision time (if no value is stored, it is null)
         logger.i(
@@ -138,6 +137,7 @@ class TasksRepositoryImpl implements TasksRepository {
         final newServerTasks = tasksList.map((task) => task.toDto()).toList();
         await server.patchTasks(newServerTasks);
         await prefs.setBool(hasLocalChangesKey, false);
+        prioritySort(tasksList);
         return tasksList;
       }
     } on SocketException {
@@ -210,5 +210,17 @@ class TasksRepositoryImpl implements TasksRepository {
     } catch (error) {
       logger.e(error);
     }
+  }
+
+  void prioritySort(List<TaskModel> tasks) {
+    tasks.sort(
+      (a, b) {
+        final compare = a.priority.index.compareTo(b.priority.index);
+        if (compare == 0) {
+          return b.createdAt.compareTo(a.createdAt);
+        }
+        return compare;
+      },
+    );
   }
 }

@@ -29,10 +29,6 @@ class IsarService implements TasksDB {
   @override
   Future<List<TaskDB>> getTasksList() async {
     final isarTasks = await isar.taskDBs.where().findAll();
-    //TODO: Realize better sorting everywhere
-    isarTasks.sort(
-      (a, b) => b.createdAt.compareTo(a.createdAt),
-    );
     return isarTasks;
   }
 

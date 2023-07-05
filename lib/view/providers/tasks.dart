@@ -178,10 +178,25 @@ class Tasks with ChangeNotifier {
   }
 
   Future<void> updateTask(String id, TaskModel newTask) async {
+    //change task in the list based on new priority
     final taskIndex = _tasks.indexWhere((task) => task.id == id);
     if (taskIndex != -1) {
-      if (taskIndex >= 0) {
-        _tasks[taskIndex] = newTask;
+      if (_tasks[taskIndex].priority == newTask.priority) {
+        _tasks[taskIndex] == newTask;
+      } else if (_tasks[taskIndex].priority.index < newTask.priority.index) {
+        _tasks.removeAt(taskIndex);
+        final newIndex = _tasks.indexWhere(
+          (task) => task.priority.index >= newTask.priority.index,
+        );
+        newIndex == -1 ? _tasks.add(newTask) : _tasks.insert(newIndex, newTask);
+      } else {
+        _tasks.removeAt(taskIndex);
+        final newIndex = _tasks.lastIndexWhere(
+          (task) => task.priority.index <= newTask.priority.index,
+        );
+        newIndex == -1
+            ? _tasks.insert(0, newTask)
+            : _tasks.insert(newIndex + 1, newTask);
       }
       notifyListeners();
       await tasksRepos.updateDBTask(id, newTask);
@@ -200,7 +215,29 @@ class Tasks with ChangeNotifier {
   }
 
   Future<void> addTask(TaskModel newTask) async {
-    _tasks.add(newTask);
+    //put new task in the list based on its priority
+    if (newTask.priority == Priority.high) {
+      _tasks.insert(0, newTask);
+    } else if (newTask.priority == Priority.none) {
+      final index = _tasks.indexWhere((task) => task.priority == Priority.none);
+      if (index == -1) {
+        final anotherIndex =
+            _tasks.indexWhere((task) => task.priority == Priority.low);
+        anotherIndex == -1
+            ? _tasks.add(newTask)
+            : _tasks.insert(anotherIndex, newTask);
+      } else {
+        _tasks.insert(index, newTask);
+      }
+    } else {
+      final index = _tasks.indexWhere((task) => task.priority == Priority.low);
+      if (index == -1) {
+        _tasks.add(newTask);
+      } else {
+        _tasks.insert(index, newTask);
+      }
+    }
+
     notifyListeners();
     await tasksRepos.addDBTask(newTask);
     logger.i('New task added: $newTask');

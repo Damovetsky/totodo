@@ -1,9 +1,10 @@
 import 'package:uuid/uuid.dart';
 
+//It is important to keep the correct order of items here
 enum Priority {
+  high,
   none,
   low,
-  high,
 }
 
 class TaskModel {
@@ -55,6 +56,15 @@ class TaskModel {
 
   @override
   String toString() {
-    return 'id: $id, description: $description, dueDate: $dueDate, isChecked: $isChecked, Priority: $priority, createdAt: $createdAt, changedAt: $changedAt, deviceId: $deviceId, color: $color';
+    return '''
+    id: $id, 
+    description: $description, 
+    dueDate: $dueDate, 
+    isChecked: $isChecked, 
+    Priority: $priority, 
+    createdAt: $createdAt, 
+    changedAt: $changedAt, 
+    deviceId: $deviceId, 
+    color: $color''';
   }
 }

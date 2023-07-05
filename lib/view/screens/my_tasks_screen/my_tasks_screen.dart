@@ -5,6 +5,7 @@ import '../../navigation/tasks_router_deligate.dart';
 import './widgets/my_tasks_appbar.dart';
 import '../../../core/ui/color_schemes.dart';
 import 'widgets/data_fab.dart';
+import 'widgets/language_fab.dart';
 import 'widgets/tasks_list_card.dart';
 
 class MyTasksScreen extends StatelessWidget {
@@ -22,10 +23,24 @@ class MyTasksScreen extends StatelessWidget {
           TasksListCard(),
         ],
       ),
-      //floatingActionButton: const DataFloatingActionButton(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => getIt.get<TasksRouterDeligate>().showNewTaskScreen(),
-        child: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          const LanguageFloatingActionButton(),
+          const SizedBox(
+            width: 8,
+          ),
+          const DataFloatingActionButton(),
+          const SizedBox(
+            width: 8,
+          ),
+          FloatingActionButton(
+            heroTag: 'Add task button',
+            onPressed: () =>
+                getIt.get<TasksRouterDeligate>().showNewTaskScreen(),
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }

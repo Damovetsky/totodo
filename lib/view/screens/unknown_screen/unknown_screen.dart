@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
+import '../../../generated/locale_keys.g.dart';
 
 class UnknownScreen extends StatelessWidget {
   const UnknownScreen({
@@ -8,8 +11,7 @@ class UnknownScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //TODO: add localization for this text
-      appBar: AppBar(title: const Text('Задача не найдена')),
+      appBar: AppBar(title: Text(LocaleKeys.task_not_found.tr())),
       body: const Center(
         child: Text('404'),
       ),

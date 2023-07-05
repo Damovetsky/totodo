@@ -11,5 +11,6 @@
     "delete": "Delete",
     "do_before": "Do before",
     "cancel": "CANCEL",
-    "done": "DONE"
+    "done": "DONE",
+    "task_not_found": "Task not found"
 }

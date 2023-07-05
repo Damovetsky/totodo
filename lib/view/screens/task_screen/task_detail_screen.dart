@@ -55,9 +55,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   }
 
   Future<void> _saveChanges(TaskModel? task) async {
-    // setState(() {
-    //   _isLoading = true;
-    // });
+    setState(() {
+      _isLoading = true;
+    });
     if (task != null) {
       await Provider.of<Tasks>(context, listen: false).updateTask(
         task.id,
@@ -86,9 +86,6 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         ),
       );
     }
-    // setState(() {
-    //   _isLoading = false;
-    // });
   }
 
   @override

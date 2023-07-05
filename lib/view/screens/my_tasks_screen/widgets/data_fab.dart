@@ -11,6 +11,7 @@ class DataFloatingActionButton extends StatelessWidget {
     final currentDataState = Provider.of<Tasks>(context).dataStatus;
 
     return FloatingActionButton(
+      heroTag: 'Data synchronization status button',
       onPressed: currentDataState == DataStatus.loading
           ? null
           : () async =>

@@ -57,10 +57,6 @@ class TasksServerImpl implements TasksServer {
               taskResponseDto.revision,
             );
             _prefs.setInt(
-              lastServerRevisionKey,
-              taskResponseDto.revision,
-            );
-            _prefs.setInt(
               lastServerRevisionTimeKey,
               DateTime.now().millisecondsSinceEpoch,
             );
@@ -127,10 +123,6 @@ class TasksServerImpl implements TasksServer {
               extractedData.revision,
             );
             _prefs.setInt(
-              lastServerRevisionKey,
-              extractedData.revision,
-            );
-            _prefs.setInt(
               lastServerRevisionTimeKey,
               DateTime.now().millisecondsSinceEpoch,
             );
@@ -187,10 +179,6 @@ class TasksServerImpl implements TasksServer {
             );
             _prefs.setInt(
               sharedPreferencesRevisionKey,
-              taskResponseDto.revision,
-            );
-            _prefs.setInt(
-              lastServerRevisionKey,
               taskResponseDto.revision,
             );
             _prefs.setInt(
@@ -263,10 +251,6 @@ class TasksServerImpl implements TasksServer {
             );
             _prefs.setInt(
               sharedPreferencesRevisionKey,
-              taskResponseDto.revision,
-            );
-            _prefs.setInt(
-              lastServerRevisionKey,
               taskResponseDto.revision,
             );
             _prefs.setInt(
