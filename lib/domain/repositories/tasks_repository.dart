@@ -142,6 +142,8 @@ class TasksRepositoryImpl implements TasksRepository {
       }
     } on SocketException {
       rethrow;
+    } on ServerErrorException {
+      rethrow;
     } catch (error) {
       logger.e(error);
       return null;
@@ -163,6 +165,9 @@ class TasksRepositoryImpl implements TasksRepository {
       prefs.setBool(hasLocalChangesKey, true);
       rethrow;
     } on UnsynchronizedDataException {
+      prefs.setBool(hasLocalChangesKey, true);
+      rethrow;
+    } on ServerErrorException {
       prefs.setBool(hasLocalChangesKey, true);
       rethrow;
     } catch (error) {
@@ -187,6 +192,9 @@ class TasksRepositoryImpl implements TasksRepository {
     } on UnsynchronizedDataException {
       prefs.setBool(hasLocalChangesKey, true);
       rethrow;
+    } on ServerErrorException {
+      prefs.setBool(hasLocalChangesKey, true);
+      rethrow;
     } catch (error) {
       logger.e(error);
     }
@@ -205,6 +213,9 @@ class TasksRepositoryImpl implements TasksRepository {
       prefs.setBool(hasLocalChangesKey, true);
       rethrow;
     } on UnsynchronizedDataException {
+      prefs.setBool(hasLocalChangesKey, true);
+      rethrow;
+    } on ServerErrorException {
       prefs.setBool(hasLocalChangesKey, true);
       rethrow;
     } catch (error) {

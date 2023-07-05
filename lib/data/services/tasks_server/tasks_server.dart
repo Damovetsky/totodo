@@ -102,7 +102,6 @@ class TasksServerImpl implements TasksServer {
     final url =
         Uri.parse('${ServerConstants.baseUrl}${ServerConstants.listEndpoint}');
     final encodedData = jsonEncode({'list': tasks});
-    //final encodedData = jsonEncode(tasks.map((task) => task.toJson()).toList());
     try {
       final response = await cl.patch(
         url,
@@ -224,7 +223,7 @@ class TasksServerImpl implements TasksServer {
       rethrow;
     } catch (e) {
       logger.e('An error occured when conecting with server: $e');
-      throw UnknownException();
+      rethrow;
     }
   }
 
@@ -291,7 +290,7 @@ class TasksServerImpl implements TasksServer {
       rethrow;
     } catch (e) {
       logger.e('An error occured when conecting with server: $e');
-      throw UnknownException();
+      rethrow;
     }
   }
 
@@ -339,7 +338,7 @@ class TasksServerImpl implements TasksServer {
       rethrow;
     } catch (e) {
       logger.e('An error occured when conecting with server: $e');
-      throw UnknownException();
+      rethrow;
     }
   }
 }

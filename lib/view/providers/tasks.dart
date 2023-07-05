@@ -130,6 +130,8 @@ class Tasks with ChangeNotifier {
       _dataStatus = DataStatus.sync;
     } on SocketException {
       _dataStatus = DataStatus.unsync;
+    } on ServerErrorException {
+      _dataStatus = DataStatus.unsync;
     }
     notifyListeners();
   }
@@ -150,6 +152,9 @@ class Tasks with ChangeNotifier {
       } on UnsynchronizedDataException {
         _dataStatus = DataStatus.unsync;
         notifyListeners();
+      } on ServerErrorException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
       }
     } else {
       logger.e('Task index was not found when checking the checkbox');
@@ -168,6 +173,9 @@ class Tasks with ChangeNotifier {
         _dataStatus = DataStatus.unsync;
         notifyListeners();
       } on UnsynchronizedDataException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+      } on ServerErrorException {
         _dataStatus = DataStatus.unsync;
         notifyListeners();
       }
@@ -206,6 +214,9 @@ class Tasks with ChangeNotifier {
         _dataStatus = DataStatus.unsync;
         notifyListeners();
       } on UnsynchronizedDataException {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+      } on ServerErrorException {
         _dataStatus = DataStatus.unsync;
         notifyListeners();
       }
@@ -247,6 +258,9 @@ class Tasks with ChangeNotifier {
       _dataStatus = DataStatus.unsync;
       notifyListeners();
     } on UnsynchronizedDataException {
+      _dataStatus = DataStatus.unsync;
+      notifyListeners();
+    } on ServerErrorException {
       _dataStatus = DataStatus.unsync;
       notifyListeners();
     }
