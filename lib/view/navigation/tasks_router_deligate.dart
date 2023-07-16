@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../data/services/analitics/analitics.dart';
 import '../../domain/models/task_model.dart';
 import '../screens/my_tasks_screen/my_tasks_screen.dart';
 import '../screens/task_screen/task_detail_screen.dart';
@@ -12,8 +13,10 @@ class TasksRouterDeligate extends RouterDelegate<NavigationState>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<NavigationState> {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
+  final Analytics analitics;
 
-  TasksRouterDeligate() : navigatorKey = GlobalKey<NavigatorState>();
+  TasksRouterDeligate(this.analitics)
+      : navigatorKey = GlobalKey<NavigatorState>();
 
   NavigationState? state;
 
@@ -60,11 +63,13 @@ class TasksRouterDeligate extends RouterDelegate<NavigationState>
 
   void showNewTaskScreen() {
     state = NavigationState.newTask();
+    analitics.navigateToAddTaskScreenEvent();
     notifyListeners();
   }
 
   void showTaskEditingScreen(TaskModel task) {
     state = NavigationState.editTask(task);
+    analitics.navigateToEditTaskScreenEvent();
     notifyListeners();
   }
 }

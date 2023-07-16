@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
@@ -26,15 +27,19 @@ abstract class FirebaseModule {
     return firebaseApp;
   }
 
+  FirebaseAnalytics get firebaseAnalytics => FirebaseAnalytics.instance;
+
   FirebaseRemoteConfig get firebaseRemoteConfig {
     final config = FirebaseRemoteConfig.instance;
     //TODO: change minimum fetch interval to a larger duration after homework check
-    unawaited(config.setConfigSettings(
-      RemoteConfigSettings(
-        fetchTimeout: const Duration(seconds: 3),
-        minimumFetchInterval: const Duration(seconds: 5),
+    unawaited(
+      config.setConfigSettings(
+        RemoteConfigSettings(
+          fetchTimeout: const Duration(seconds: 3),
+          minimumFetchInterval: const Duration(seconds: 5),
+        ),
       ),
-    ));
+    );
     return config;
   }
 

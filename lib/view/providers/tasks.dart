@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../core/error/exeption.dart';
+import '../../data/services/analitics/analitics.dart';
 import '../../domain/models/task_model.dart';
 import '../../domain/repositories/tasks_repository.dart';
 import '../../logger.dart';
@@ -12,85 +13,10 @@ import '../../logger.dart';
 @lazySingleton
 class Tasks with ChangeNotifier {
   final TasksRepository tasksRepos;
-  Tasks(this.tasksRepos);
+  final Analytics analitics;
+  Tasks(this.tasksRepos, this.analitics);
 
-  List<TaskModel> _tasks = [
-    // Task(
-    //   description: 'Приветствую тебя на экране с задачами моего приложения!',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Ты скорее всего хочешь проверить реализованный функционал',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Эту задачу можно свайпнуть вправо, чтобы её выполнить',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'А эту задачу можно удалить свайпом влево',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description:
-    //       'А это просто задача с ну ооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооочень длинным текстом',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description:
-    //       'Когда повыполняешь задачи, нажми на иконку глаза, чтобы скрыть выполненные',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'А это просто крайне срочная задача!',
-    //   priority: Priority.high,
-    //   createdAt: DateTime.now(),
-    //   dueDate: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Эту задачу можно отредактировать нажав на иконку -->',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //     description:
-    //         'Тут уж совсем несрочная задача, дедлайн которой ещё не скоро',
-    //     createdAt: DateTime.now(),
-    //     dueDate: DateTime(2024),
-    //     priority: Priority.low),
-    // Task(
-    //   description: 'Попробуй добавить новую задачу при помощи кнопки с плюсом',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description:
-    //       'Дальше просто лист задач, чтобы была возможность проверить скрол',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Задача 1',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Задача 2',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Задача 3',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Задача 4',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Задача 5',
-    //   createdAt: DateTime.now(),
-    // ),
-    // Task(
-    //   description: 'Удачной проверки и успехов во Flutter!',
-    //   createdAt: DateTime.now(),
-    // ),
-  ];
+  List<TaskModel> _tasks = [];
 
   DataStatus _dataStatus = DataStatus.unsync;
 
@@ -146,15 +72,17 @@ class Tasks with ChangeNotifier {
       await tasksRepos.updateDBTask(id, _tasks[index]);
       try {
         await tasksRepos.updateServerTask(id, _tasks[index]);
-      } on SocketException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
-      } on UnsynchronizedDataException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
-      } on ServerErrorException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
+        analitics.toggleTaskEvent(_tasks[index], true);
+      } catch (e) {
+        if (e is SocketException ||
+            e is UnsynchronizedDataException ||
+            e is ServerErrorException) {
+          _dataStatus = DataStatus.unsync;
+          notifyListeners();
+          analitics.toggleTaskEvent(_tasks[index], false);
+        } else {
+          rethrow;
+        }
       }
     } else {
       logger.e('Task index was not found when checking the checkbox');
@@ -169,15 +97,17 @@ class Tasks with ChangeNotifier {
       await tasksRepos.removeDBTask(id);
       try {
         await tasksRepos.removeServerTask(id);
-      } on SocketException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
-      } on UnsynchronizedDataException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
-      } on ServerErrorException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
+        analitics.removeTaskEvent(task, true);
+      } catch (e) {
+        if (e is SocketException ||
+            e is UnsynchronizedDataException ||
+            e is ServerErrorException) {
+          _dataStatus = DataStatus.unsync;
+          notifyListeners();
+          analitics.removeTaskEvent(task, false);
+        } else {
+          rethrow;
+        }
       }
     } catch (error) {
       logger.e(error);
@@ -210,15 +140,17 @@ class Tasks with ChangeNotifier {
       await tasksRepos.updateDBTask(id, newTask);
       try {
         await tasksRepos.updateServerTask(id, newTask);
-      } on SocketException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
-      } on UnsynchronizedDataException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
-      } on ServerErrorException {
-        _dataStatus = DataStatus.unsync;
-        notifyListeners();
+        analitics.editTaskEvent(newTask, true);
+      } catch (e) {
+        if (e is SocketException ||
+            e is UnsynchronizedDataException ||
+            e is ServerErrorException) {
+          _dataStatus = DataStatus.unsync;
+          notifyListeners();
+          analitics.editTaskEvent(newTask, false);
+        } else {
+          rethrow;
+        }
       }
     } else {
       logger.e('Task was not found when updating it');
@@ -254,15 +186,17 @@ class Tasks with ChangeNotifier {
     logger.i('New task added: $newTask');
     try {
       await tasksRepos.addServerTask(newTask);
-    } on SocketException {
-      _dataStatus = DataStatus.unsync;
-      notifyListeners();
-    } on UnsynchronizedDataException {
-      _dataStatus = DataStatus.unsync;
-      notifyListeners();
-    } on ServerErrorException {
-      _dataStatus = DataStatus.unsync;
-      notifyListeners();
+      analitics.addTaskEvent(newTask, true);
+    } catch (e) {
+      if (e is SocketException ||
+          e is UnsynchronizedDataException ||
+          e is ServerErrorException) {
+        _dataStatus = DataStatus.unsync;
+        notifyListeners();
+        analitics.addTaskEvent(newTask, false);
+      } else {
+        rethrow;
+      }
     }
   }
 
