@@ -5,15 +5,15 @@
         "name": "development",
         "request": "launch",
         "type": "dart",
-        "program": "lib/main.dart",
-        "args": ["--dart-define=DEBUG=true"]
+        "program": "lib/main_development.dart",
+        "args": ["--dart-define=DEV=true"]
       },
       {
         "name": "poduction",
         "request": "launch",
         "type": "dart",
-        "program": "lib/main.dart",
-        "args": ["--dart-define=DEBUG=false"]
+        "program": "lib/main_production.dart",
+        "args": ["--dart-define=DEV=false"]
       }
     ],
     "compounds": []

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:totodo/app.dart';
-import 'package:totodo/init_main.dart';
+
+import 'app.dart';
+import 'init_main.dart';
 
 void main() async {
   await initMain();
