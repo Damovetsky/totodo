@@ -39,8 +39,11 @@ class App extends StatelessWidget {
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
     return MaterialApp.router(
-      title: 'ToToDo',
-      debugShowCheckedModeBanner: false,
+      title: const bool.fromEnvironment('DEBUG', defaultValue: true)
+          ? 'ToToDo[dev]'
+          : 'ToToDo',
+      debugShowCheckedModeBanner:
+          const bool.fromEnvironment('DEBUG', defaultValue: true),
       theme: lightTheme,
       darkTheme: darkTheme,
       localizationsDelegates: context.localizationDelegates,

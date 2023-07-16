@@ -63,7 +63,7 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i9.TasksRouteInformationParser());
     gh.factory<_i10.TasksServer>(
         () => _i10.TasksServerImpl(gh<_i7.SharedPreferences>()));
-    gh.factory<_i11.Analitics>(
+    gh.factory<_i11.Analytics>(
         () => _i11.AnaliticsService(gh<_i3.FirebaseAnalytics>()));
     gh.lazySingleton<_i12.ConfigRepository>(
         () => _i12.ConfigRepository(gh<_i5.FirebaseRemoteConfig>()));
@@ -73,10 +73,10 @@ extension GetItInjectableX on _i1.GetIt {
           db: gh<_i8.TasksDB>(),
         ));
     gh.lazySingleton<_i14.TasksRouterDeligate>(
-        () => _i14.TasksRouterDeligate(gh<_i11.Analitics>()));
+        () => _i14.TasksRouterDeligate(gh<_i11.Analytics>()));
     gh.lazySingleton<_i15.Tasks>(() => _i15.Tasks(
           gh<_i13.TasksRepository>(),
-          gh<_i11.Analitics>(),
+          gh<_i11.Analytics>(),
         ));
     return this;
   }
