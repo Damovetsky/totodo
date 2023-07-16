@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../core/di/di.dart';
-import '../../domain/models/routes.dart';
+import '../../domain/routes.dart';
 import '../../domain/models/task_model.dart';
 import '../providers/tasks.dart';
 import 'navigation_state.dart';

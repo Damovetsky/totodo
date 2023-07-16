@@ -3,13 +3,13 @@ import 'package:totodo/data/services/tasks_server/dto/tasks_list_dto.dart';
 
 import '../test_constants.dart';
 
-final TasksListDto mockDtoTasksList = TasksListDto(
+const TasksListDto mockDtoTasksList = TasksListDto(
   status: 'ок',
   list: [dtoTaskA, dtoTaskB],
   revision: dataRevision5,
 );
 
-final TasksListDto mockDtoTasksListWithFirstRevision = TasksListDto(
+const TasksListDto mockDtoTasksListWithFirstRevision = TasksListDto(
   status: 'ок',
   list: [dtoTaskA, dtoTaskB],
   revision: dataRevision1,

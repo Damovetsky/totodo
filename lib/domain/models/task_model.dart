@@ -1,84 +1,25 @@
-import 'package:equatable/equatable.dart';
-import 'package:uuid/uuid.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'task_model.freezed.dart';
+
+@freezed
+class TaskModel with _$TaskModel {
+  const factory TaskModel({
+    required String id,
+    required String description,
+    required bool isChecked,
+    required Priority priority,
+    DateTime? dueDate,
+    String? color,
+    required DateTime createdAt,
+    required DateTime changedAt,
+    required String deviceId,
+  }) = _TaskModel;
+}
 
 //It is important to keep the correct order of items here (for sorting)
 enum Priority {
   high,
   none,
   low,
-}
-
-class TaskModel extends Equatable {
-  final String id;
-  final String description;
-  final bool isChecked;
-  final Priority priority;
-  final DateTime? dueDate;
-  final String? color;
-  final DateTime createdAt;
-  final DateTime changedAt;
-  final String deviceId;
-
-  TaskModel({
-    String? id,
-    required this.description,
-    required this.isChecked,
-    required this.priority,
-    this.dueDate,
-    this.color,
-    required this.createdAt,
-    required this.changedAt,
-    required this.deviceId,
-  }) : id = id ?? const Uuid().v4();
-
-  TaskModel copyWith({
-    String? id,
-    String? description,
-    bool? isChecked,
-    Priority? priority,
-    DateTime? dueDate,
-    String? color,
-    DateTime? createdAt,
-    DateTime? changedAt,
-    String? deviceId,
-  }) {
-    return TaskModel(
-      id: id ?? this.id,
-      description: description ?? this.description,
-      isChecked: isChecked ?? this.isChecked,
-      priority: priority ?? this.priority,
-      dueDate: dueDate ?? this.dueDate,
-      color: color ?? this.color,
-      createdAt: createdAt ?? this.createdAt,
-      changedAt: changedAt ?? this.changedAt,
-      deviceId: deviceId ?? this.deviceId,
-    );
-  }
-
-  @override
-  String toString() {
-    return '''
-    id: $id, 
-    description: $description, 
-    dueDate: $dueDate, 
-    isChecked: $isChecked, 
-    Priority: $priority, 
-    createdAt: $createdAt, 
-    changedAt: $changedAt, 
-    deviceId: $deviceId, 
-    color: $color''';
-  }
-
-  @override
-  List<Object?> get props => [
-        id,
-        description,
-        dueDate,
-        isChecked,
-        priority,
-        createdAt,
-        changedAt,
-        color,
-        deviceId
-      ];
 }

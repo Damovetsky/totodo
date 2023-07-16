@@ -10,7 +10,7 @@ final List<TaskDB> mockDBTasksWithTasksAC = [
   dbTaskC,
 ];
 
-final TaskDB dbTaskA = TaskDB(
+const TaskDB dbTaskA = TaskDB(
   uuid: '110ec58a-a0f2-4ac4-8393-c866d813b8da',
   title: 'task a',
   isChecked: true,
@@ -19,7 +19,7 @@ final TaskDB dbTaskA = TaskDB(
   changedAt: 1001,
   lastUpdatedBy: 'phone',
 );
-final TaskDB dbTaskB = TaskDB(
+const TaskDB dbTaskB = TaskDB(
   uuid: '110ec58a-a0f2-4ac4-8393-c866d813b8db',
   title: 'task b',
   isChecked: true,
@@ -28,7 +28,7 @@ final TaskDB dbTaskB = TaskDB(
   changedAt: 1501,
   lastUpdatedBy: 'phone',
 );
-final TaskDB dbTaskC = TaskDB(
+const TaskDB dbTaskC = TaskDB(
   uuid: '110ec58a-a0f2-4ac4-8393-c866d813b8dc',
   title: 'task c',
   isChecked: true,
