@@ -62,7 +62,7 @@ class CustomDropdownButton extends StatelessWidget {
             value: Priority.high,
             child: Text(
               LocaleKeys.high.tr(),
-              style: const TextStyle(color: redColor),
+              style: TextStyle(color: importanceColor),
             ),
           ),
         ],

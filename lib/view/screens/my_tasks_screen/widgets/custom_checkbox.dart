@@ -21,7 +21,7 @@ class CustomCheckbox extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(15),
             child: Container(
-              color: redColor.withOpacity(0.16),
+              color: importanceColor.withOpacity(0.16),
               height: 18,
               width: 18,
             ),
@@ -35,7 +35,7 @@ class CustomCheckbox extends StatelessWidget {
                 return greenColor;
               }
               return task.priority == Priority.high
-                  ? redColor
+                  ? importanceColor
                   : currentColorScheme(context).onSurfaceVariant;
             },
           ),

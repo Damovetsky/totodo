@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import './core/ui/theme.dart';
 import 'core/di/di.dart';
+import 'domain/repositories/config_repository.dart';
 import 'generated/codegen_loader.g.dart';
 import 'view/navigation/tasks_route_information_parser.dart';
 import 'view/navigation/tasks_router_deligate.dart';
@@ -14,6 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await configureDependencies();
+  await getIt.get<ConfigRepository>().init();
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ru')],

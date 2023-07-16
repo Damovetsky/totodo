@@ -111,7 +111,7 @@ class _TaskTileState extends State<TaskTile> {
                                 height: 1,
                                 color: widget.task.isChecked
                                     ? greyColor
-                                    : redColor,
+                                    : importanceColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

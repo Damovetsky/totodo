@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/repositories/config_repository.dart';
+import '../di/di.dart';
+
 ColorScheme currentColorScheme(context) => Theme.of(context).colorScheme;
 
 const lightColorScheme = ColorScheme(
@@ -70,6 +73,7 @@ const darkColorScheme = ColorScheme(
   scrim: Color(0xFF000000),
 );
 
+final importanceColor = getIt.get<ConfigRepository>().importanceColor;
 const redColor = Color(0xFFFF3B30);
 const greenColor = Color(0xFF34C759);
 const greyColor = Color(0xFF8E8E93);
