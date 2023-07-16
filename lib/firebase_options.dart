@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -67,17 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '619671717747',
     projectId: 'totodo-shmr',
     storageBucket: 'totodo-shmr.appspot.com',
-    iosClientId: '619671717747-o9cjajgvesqcmrrau191mko0oikm58r1.apps.googleusercontent.com',
-    iosBundleId: 'com.example.totodo',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBYEfxeKSHzKRjx3fqFDi4n1SD-njrKPYk',
-    appId: '1:619671717747:ios:12947a889f9575cd442706',
-    messagingSenderId: '619671717747',
-    projectId: 'totodo-shmr',
-    storageBucket: 'totodo-shmr.appspot.com',
-    iosClientId: '619671717747-o9cjajgvesqcmrrau191mko0oikm58r1.apps.googleusercontent.com',
+    iosClientId:
+        '619671717747-o9cjajgvesqcmrrau191mko0oikm58r1.apps.googleusercontent.com',
     iosBundleId: 'com.example.totodo',
   );
 }
