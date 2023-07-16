@@ -26,12 +26,14 @@ class TasksListCard extends StatefulWidget {
 class _TasksListCardState extends State<TasksListCard> {
   bool _isInit = true;
   bool _isLoading = false;
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   Future<void> _tasksInitialization() async {
     if (_isInit) {
       setState(() {
         _isLoading = true;
       });
+      Provider.of<Tasks>(context, listen: false).setListKey(_listKey);
       await Provider.of<Tasks>(context, listen: false).fetchAndSetTasks();
       setState(() {
         _isLoading = false;
@@ -75,18 +77,22 @@ class _TasksListCardState extends State<TasksListCard> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ListView.builder(
+                  AnimatedList(
+                    key: _listKey,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: tasks.length,
+                    initialItemCount: tasks.length,
                     padding: EdgeInsets.zero,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (context, index, animation) {
                       if (!showCompleted && tasks[index].isChecked) {
                         return const SizedBox(
                           height: 0,
                         );
                       }
-                      return TaskTile(
-                        task: tasks[index],
+                      return SizeTransition(
+                        sizeFactor: animation,
+                        child: TaskTile(
+                          task: tasks[index],
+                        ),
                       );
                     },
                     shrinkWrap: true,

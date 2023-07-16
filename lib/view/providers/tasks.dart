@@ -9,6 +9,7 @@ import '../../data/services/analitics/analitics.dart';
 import '../../domain/models/task_model.dart';
 import '../../domain/repositories/tasks_repository.dart';
 import '../../logger.dart';
+import '../screens/my_tasks_screen/widgets/task_tile.dart';
 
 @lazySingleton
 class Tasks with ChangeNotifier {
@@ -17,6 +18,12 @@ class Tasks with ChangeNotifier {
   Tasks(this.tasksRepos, this.analitics);
 
   List<TaskModel> _tasks = [];
+
+  late final GlobalKey<AnimatedListState> _listKey;
+
+  void setListKey(GlobalKey<AnimatedListState> key) {
+    _listKey = key;
+  }
 
   DataStatus _dataStatus = DataStatus.unsync;
 
@@ -91,7 +98,10 @@ class Tasks with ChangeNotifier {
 
   Future<void> removeTask(String id) async {
     try {
-      final task = _tasks.firstWhere((element) => element.id == id);
+      final index = _tasks.indexWhere((element) => element.id == id);
+      final task = _tasks[index];
+      _listKey.currentState
+          ?.removeItem(index, (context, animation) => Container());
       _tasks.remove(task);
       notifyListeners();
       await tasksRepos.removeDBTask(id);
@@ -110,7 +120,6 @@ class Tasks with ChangeNotifier {
         }
       }
     } catch (error) {
-      logger.e(error);
       logger.e('Task was not found when removing it');
     }
   }
@@ -119,22 +128,57 @@ class Tasks with ChangeNotifier {
     //change task in the list based on new priority
     final taskIndex = _tasks.indexWhere((task) => task.id == id);
     if (taskIndex != -1) {
+      final oldTask = _tasks[taskIndex];
+      _listKey.currentState?.removeItem(
+        duration: const Duration(milliseconds: 600),
+        taskIndex,
+        (context, animation) => SizeTransition(
+          sizeFactor: animation,
+          child: TaskTile(task: oldTask),
+        ),
+      );
       if (_tasks[taskIndex].priority == newTask.priority) {
-        _tasks[taskIndex] == newTask;
+        _tasks[taskIndex] = newTask;
+        _listKey.currentState?.insertItem(
+          taskIndex,
+          duration: const Duration(milliseconds: 600),
+        );
       } else if (_tasks[taskIndex].priority.index < newTask.priority.index) {
         _tasks.removeAt(taskIndex);
         final newIndex = _tasks.indexWhere(
           (task) => task.priority.index >= newTask.priority.index,
         );
-        newIndex == -1 ? _tasks.add(newTask) : _tasks.insert(newIndex, newTask);
+        if (newIndex == -1) {
+          _tasks.add(newTask);
+          _listKey.currentState?.insertItem(
+            _tasks.length - 1,
+            duration: const Duration(milliseconds: 600),
+          );
+        } else {
+          _tasks.insert(newIndex, newTask);
+          _listKey.currentState?.insertItem(
+            newIndex,
+            duration: const Duration(milliseconds: 600),
+          );
+        }
       } else {
         _tasks.removeAt(taskIndex);
         final newIndex = _tasks.lastIndexWhere(
           (task) => task.priority.index <= newTask.priority.index,
         );
-        newIndex == -1
-            ? _tasks.insert(0, newTask)
-            : _tasks.insert(newIndex + 1, newTask);
+        if (newIndex == -1) {
+          _tasks.insert(0, newTask);
+          _listKey.currentState?.insertItem(
+            0,
+            duration: const Duration(milliseconds: 600),
+          );
+        } else {
+          _tasks.insert(newIndex + 1, newTask);
+          _listKey.currentState?.insertItem(
+            newIndex + 1,
+            duration: const Duration(milliseconds: 600),
+          );
+        }
       }
       notifyListeners();
       await tasksRepos.updateDBTask(id, newTask);
@@ -161,23 +205,45 @@ class Tasks with ChangeNotifier {
     //put new task in the list based on its priority
     if (newTask.priority == Priority.high) {
       _tasks.insert(0, newTask);
+      _listKey.currentState
+          ?.insertItem(0, duration: const Duration(milliseconds: 500));
     } else if (newTask.priority == Priority.none) {
       final index = _tasks.indexWhere((task) => task.priority == Priority.none);
       if (index == -1) {
         final anotherIndex =
             _tasks.indexWhere((task) => task.priority == Priority.low);
-        anotherIndex == -1
-            ? _tasks.add(newTask)
-            : _tasks.insert(anotherIndex, newTask);
+        if (anotherIndex == -1) {
+          _tasks.add(newTask);
+          _listKey.currentState?.insertItem(
+            _tasks.length - 1,
+            duration: const Duration(milliseconds: 500),
+          );
+        } else {
+          _tasks.insert(anotherIndex, newTask);
+          _listKey.currentState?.insertItem(
+            anotherIndex,
+            duration: const Duration(milliseconds: 500),
+          );
+        }
       } else {
         _tasks.insert(index, newTask);
+        _listKey.currentState
+            ?.insertItem(index, duration: const Duration(milliseconds: 500));
       }
     } else {
       final index = _tasks.indexWhere((task) => task.priority == Priority.low);
       if (index == -1) {
         _tasks.add(newTask);
+        _listKey.currentState?.insertItem(
+          _tasks.length - 1,
+          duration: const Duration(milliseconds: 500),
+        );
       } else {
         _tasks.insert(index, newTask);
+        _listKey.currentState?.insertItem(
+          index,
+          duration: const Duration(milliseconds: 500),
+        );
       }
     }
 
