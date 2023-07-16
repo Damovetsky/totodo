@@ -1,7 +1,7 @@
 name: totodo
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.1.0+1
+version: 1.2.0+1
 
 environment:
   sdk: '^3.0.0'
@@ -28,6 +28,9 @@ dependencies:
   injectable_generator: ^2.1.6
   mockito: ^5.4.2
   equatable: ^2.0.5
+  firebase_core: ^2.15.0
+  firebase_crashlytics: ^3.3.4
+  firebase_remote_config: ^4.2.4
 
 dev_dependencies:
   integration_test:
