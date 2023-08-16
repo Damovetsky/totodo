@@ -1,0 +1,16 @@
+{
+    "my_tasks": "My tasks",
+    "completed": "Completed — ",
+    "new_task": "New task",
+    "what_needs_to_be_done": "What needs to be done...",
+    "priority": "Priority",
+    "no_priority": "Default",
+    "low": "Low",
+    "high": "!! High",
+    "save": "SAVE",
+    "delete": "Delete",
+    "do_before": "Do before",
+    "cancel": "CANCEL",
+    "done": "DONE",
+    "task_not_found": "Task not found"
+}
