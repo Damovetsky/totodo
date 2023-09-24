@@ -3,6 +3,9 @@
 Кроссплатформенное offline-first приложение для создания и ведения задач с синхронизацией заметок между несколькими устроствами.
 Реализовано в рамках обучения в Школе Мобильной Разработки Яндекса 2023.
 
+<img src="https://github.com/Damovetsky/totodo/blob/assets/assets/mocks/app_mocks.png" alt="drawing"/>
+
+
 # Возможности приложения
 - Анимирование добавление/удаление/редактирование задач;
 - Сортировка списка задач, согласно вставленным приоритетам и дате создания;
@@ -10,6 +13,9 @@
 - Локализация приложения на русский и английский языки;
 - Поддержка тёмной темы с выбором темы согласно общим настройкам устройства;
 - Поддержка больших экранов для использования приложения на планшетах
+
+# Демо
+![animation_preview](https://github.com/Damovetsky/totodo/blob/assets/assets/demos/totodo_demo.gif)
 
 # Этапы разработки приложения
 
@@ -25,9 +31,9 @@
 ## Этап 4
 Реализованы анимации при добавлении и обновлении задач, к проекту подключен firebase со следующими сервисами: Crashlytics для репорта ошибок, Firebase Analytics для учёта событий добавления, удаления, выполнения задач и переходов по экранам, Remote Configs для переключения цвета важности и App Distribution для распространения приложения, настроен CI на GitHub на форматирование, линтер, тесты, сборку и распространение, поддержаны 2 флейвора: для сборки тестинг и прод окружения, различающиеся наличием шильдика DEV в правом верхнем углу главного экрана, дата модели переписаны на freezed.
 
+<img src="https://github.com/Damovetsky/totodo/blob/assets/assets/screenshots/all_tasks_screen.jpg" alt="drawing" width="300"/> <img src="https://github.com/Damovetsky/totodo/blob/assets/assets/screenshots/new_task_screen.jpg" alt="drawing" width="300"/>
+
 # Файлы для скачивания
 Файлы APK лежат в релизах Github
 Ссылка: https://github.com/Damovetsky/totodo/releases/tag/v1.2.1
 
-<img src="https://github.com/Damovetsky/totodo/blob/main/screenshots/Task_details_screen.png" alt="drawing" width="300"/>
-<img src="https://github.com/Damovetsky/totodo/blob/main/screenshots/Tasks_screen.png" alt="drawing" width="300"/>
