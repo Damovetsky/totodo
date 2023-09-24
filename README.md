@@ -15,7 +15,7 @@
 - Поддержка больших экранов для использования приложения на планшетах
 
 # Демо
-![animation_preview](https://github.com/Damovetsky/totodo/blob/assets/assets/demos/totodo_demo.gif)
+<img src="https://github.com/Damovetsky/totodo/blob/assets/assets/demos/totodo_demo.gif" alt="drawing" width="400"/>
 
 # Этапы разработки приложения
 
